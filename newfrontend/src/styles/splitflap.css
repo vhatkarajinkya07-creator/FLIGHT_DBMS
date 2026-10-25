@@ -1,0 +1,209 @@
+/* ==========================================================================
+   SOLARI SPLIT-FLAP DEPARTURE BOARD SYSTEM
+   ========================================================================== */
+
+.split-flap-container {
+  display: inline-flex;
+  gap: 3px;
+  background: #0f1115;
+  padding: 4px;
+  border-radius: 4px;
+  border: 2px solid #272d38;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9);
+}
+
+.flap-tile {
+  position: relative;
+  width: 28px;
+  height: 42px;
+  background: #181b20;
+  border-radius: 3px;
+  color: #f8fafc;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 42px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border: 1px solid #000;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Horizontal split flap divider line */
+.flap-tile::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #08090b;
+  box-shadow: 0 1px 1px rgba(255, 255, 255, 0.08);
+  transform: translateY(-50%);
+  z-index: 5;
+}
+
+/* Side flap hinge notches */
+.flap-tile::before {
+  content: "";
+  position: absolute;
+  top: calc(50% - 3px);
+  left: 0;
+  width: 2px;
+  height: 6px;
+  background: #334155;
+  z-index: 6;
+  box-shadow: 26px 0 0 #334155;
+}
+
+/* Size Variants */
+.flap-lg .flap-tile {
+  width: 36px;
+  height: 54px;
+  font-size: 2.3rem;
+  line-height: 54px;
+}
+
+.flap-sm .flap-tile {
+  width: 20px;
+  height: 30px;
+  font-size: 1.2rem;
+  line-height: 30px;
+}
+
+/* Departure Board Master Chassis */
+.departure-board-frame {
+  background: #13161c;
+  border: 6px solid #272b35;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9), 0 15px 30px rgba(0, 0, 0, 0.8);
+}
+
+.departure-board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #232731;
+  padding-bottom: 12px;
+}
+
+.solari-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  letter-spacing: 2px;
+  color: #f1f5f9;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.solari-model-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #64748b;
+  letter-spacing: 1px;
+}
+
+/* Departure Board Row Grid */
+.solari-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.solari-row {
+  display: grid;
+  grid-template-columns: 2.2fr auto 1.6fr 1.4fr 1.6fr auto;
+  align-items: center;
+  gap: 14px;
+  background: #0c0e12;
+  padding: 10px 14px;
+  border-radius: 5px;
+  border: 1px solid #1e232d;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.7);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.solari-row:hover {
+  background: #12151c;
+  border-color: #3b4252;
+}
+
+.solari-route-col {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.solari-plane-icon {
+  color: #94a3b8;
+  font-size: 1.2rem;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+}
+
+/* Status Badges */
+.solari-status-badge {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 1px;
+  padding: 4px 12px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 2px 4px rgba(0, 0, 0, 0.5);
+  min-width: 95px;
+}
+
+.status-delayed {
+  background: #ea580c;
+  color: #fff;
+  border-color: #9a3412;
+}
+
+.status-on-time {
+  background: #16a34a;
+  color: #fff;
+  border-color: #166534;
+}
+
+.status-boarding {
+  background: #eab308;
+  color: #000;
+  border-color: #854d0e;
+  animation: pulse-boarding 1.8s infinite;
+}
+
+@keyframes pulse-boarding {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
+}
+
+.status-cancelled {
+  background: #dc2626;
+  color: #fff;
+  border-color: #7f1d1d;
+}
+
+.status-standby {
+  background: #475569;
+  color: #f1f5f9;
+  border-color: #1e293b;
+}
+
+/* Flip animation */
+@keyframes flapDown {
+  0% { transform: rotateX(0deg); }
+  50% { transform: rotateX(-90deg); }
+  100% { transform: rotateX(0deg); }
+}
+
+.flap-animate {
+  animation: flapDown 0.15s ease-in-out;
+}

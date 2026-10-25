@@ -1,0 +1,214 @@
+/* ==========================================================================
+   VINTAGE SKEUOMORPHIC BOARDING PASS & TICKET SYSTEM (Panel 4)
+   ========================================================================== */
+
+.vintage-ticket-wrapper {
+  perspective: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.vintage-ticket {
+  display: flex;
+  background: #fbf8ef;
+  color: #1e293b;
+  border-radius: 8px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 3px 10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  position: relative;
+  font-family: var(--font-mono);
+  border: 1px solid #dcd3b8;
+  max-width: 820px;
+  width: 100%;
+}
+
+/* Subtle aged paper grain */
+.vintage-ticket::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(#d6cbb3 0.6px, transparent 0.6px);
+  background-size: 8px 8px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* Main Ticket Body (Left 72%) */
+.ticket-main {
+  flex: 1;
+  padding: 24px;
+  position: relative;
+  border-right: 2px dashed #94a3b8;
+}
+
+/* Ticket Stub (Right 28%) */
+.ticket-stub {
+  width: 230px;
+  background: #f5f0e1;
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+/* Perforation Notch Cutouts */
+.ticket-main::after,
+.ticket-stub::before {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: #11141a; /* matches modal overlay */
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.ticket-main::after {
+  right: -11px;
+  top: -11px;
+}
+
+.ticket-stub::before {
+  left: -11px;
+  bottom: -11px;
+}
+
+/* Top Banner Header */
+.ticket-airline-stripe {
+  background: linear-gradient(90deg, #1d4ed8 0%, #3b82f6 100%);
+  color: #fff;
+  padding: 8px 16px;
+  margin: -24px -24px 16px -24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ticket-airline-stripe.orange-theme {
+  background: linear-gradient(90deg, #c2410c 0%, #f97316 100%);
+}
+
+.ticket-header-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ticket-flight-class {
+  font-family: var(--font-tech);
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+/* Route & Flight Information */
+.ticket-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.ticket-data-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.ticket-label {
+  font-size: 0.7rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+}
+
+.ticket-value {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: #0f172a;
+  letter-spacing: 1px;
+}
+
+.ticket-value-lg {
+  font-size: 2rem;
+  color: #1e3a8a;
+  line-height: 1;
+}
+
+/* Barcode Section */
+.barcode-container {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #cbd5e1;
+  padding-top: 12px;
+}
+
+.barcode-svg {
+  height: 48px;
+  width: 220px;
+}
+
+/* Rubber Stamps (Like in image: AIRLINES STAMPS, APPROVED, CONFIRMED) */
+.rubber-stamp {
+  position: absolute;
+  border: 3px dashed #dc2626;
+  color: #dc2626;
+  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  font-weight: 900;
+  padding: 4px 14px;
+  border-radius: 6px;
+  opacity: 0.75;
+  pointer-events: none;
+  user-select: none;
+  mix-blend-mode: multiply;
+}
+
+.stamp-approved {
+  top: 45%;
+  right: 25%;
+  transform: rotate(-14deg);
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
+.stamp-inspected {
+  bottom: 25px;
+  left: 35%;
+  transform: rotate(8deg);
+  border-color: #2563eb;
+  color: #2563eb;
+  border-style: double;
+  border-width: 4px;
+}
+
+.stamp-circular {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #059669;
+  color: #059669;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.75rem;
+  transform: rotate(-22deg);
+  top: 15%;
+  right: 15px;
+}

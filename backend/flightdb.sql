@@ -3,83 +3,83 @@ CREATE DATABASE flight_bookings_ayushman;
 USE flight_bookings_ayushman;
 
 CREATE TABLE users (
-	user_id INTEGER NOT NULL AUTO_INCREMENT, 
-	username VARCHAR(50) NOT NULL, 
-	email VARCHAR(100) NOT NULL, 
-	password_hash VARCHAR(255) NOT NULL, 
-	first_name VARCHAR(50) NOT NULL, 
-	last_name VARCHAR(50) NOT NULL, 
-	phone_number VARCHAR(15), 
-	user_type VARCHAR(10), 
-	created_at DATETIME, 
-	is_active BOOLEAN, 
+	user_id INTEGER NOT NULL AUTO_INCREMENT,
+	username VARCHAR(50) NOT NULL,
+	email VARCHAR(100) NOT NULL,
+	password_hash VARCHAR(255) NOT NULL,
+	first_name VARCHAR(50) NOT NULL,
+	last_name VARCHAR(50) NOT NULL,
+	phone_number VARCHAR(15),
+	user_type VARCHAR(10),
+	created_at DATETIME,
+	is_active BOOLEAN,
 	PRIMARY KEY (user_id)
 );
 
 CREATE TABLE airlines (
-	airline_id INTEGER NOT NULL AUTO_INCREMENT, 
-	airline_name VARCHAR(100) NOT NULL, 
-	airline_code VARCHAR(5) NOT NULL, 
-	contact_number VARCHAR(15), 
-	email VARCHAR(100), 
-	is_active BOOLEAN, 
-	PRIMARY KEY (airline_id), 
+	airline_id INTEGER NOT NULL AUTO_INCREMENT,
+	airline_name VARCHAR(100) NOT NULL,
+	airline_code VARCHAR(5) NOT NULL,
+	contact_number VARCHAR(15),
+	email VARCHAR(100),
+	is_active BOOLEAN,
+	PRIMARY KEY (airline_id),
 	UNIQUE (airline_code)
 );
 
 CREATE TABLE flights (
-	flight_id INTEGER NOT NULL AUTO_INCREMENT, 
-	flight_number VARCHAR(10) NOT NULL, 
-	airline_id INTEGER, 
-	source_city VARCHAR(50) NOT NULL, 
-	destination_city VARCHAR(50) NOT NULL, 
-	departure_time DATETIME NOT NULL, 
-	arrival_time DATETIME NOT NULL, 
-	total_seats INTEGER NOT NULL, 
-	available_seats INTEGER NOT NULL, 
-	price FLOAT NOT NULL, 
-	flight_status VARCHAR(20), 
-	created_by INTEGER, 
-	created_at DATETIME, is_daily BOOLEAN DEFAULT 0, departure_time_only VARCHAR(8), arrival_time_only VARCHAR(8), duration_minutes INTEGER, weekdays TEXT, 
-	PRIMARY KEY (flight_id), 
-	UNIQUE (flight_number), 
-	FOREIGN KEY(airline_id) REFERENCES airlines (airline_id), 
+	flight_id INTEGER NOT NULL AUTO_INCREMENT,
+	flight_number VARCHAR(10) NOT NULL,
+	airline_id INTEGER,
+	source_city VARCHAR(50) NOT NULL,
+	destination_city VARCHAR(50) NOT NULL,
+	departure_time DATETIME NOT NULL,
+	arrival_time DATETIME NOT NULL,
+	total_seats INTEGER NOT NULL,
+	available_seats INTEGER NOT NULL,
+	price FLOAT NOT NULL,
+	flight_status VARCHAR(20),
+	created_by INTEGER,
+	created_at DATETIME, is_daily BOOLEAN DEFAULT 0, departure_time_only VARCHAR(8), arrival_time_only VARCHAR(8), duration_minutes INTEGER, weekdays TEXT,
+	PRIMARY KEY (flight_id),
+	UNIQUE (flight_number),
+	FOREIGN KEY(airline_id) REFERENCES airlines (airline_id),
 	FOREIGN KEY(created_by) REFERENCES users (user_id)
 );
 
 CREATE TABLE bookings (
-	booking_id INTEGER NOT NULL AUTO_INCREMENT, 
-	user_id INTEGER, 
-	flight_id INTEGER, 
-	booking_date DATETIME, 
-	passengers_count INTEGER NOT NULL, 
-	total_amount FLOAT NOT NULL, 
-	booking_status VARCHAR(20), 
-	payment_status VARCHAR(20), 
-	pnr_number VARCHAR(10) NOT NULL, travel_date DATETIME, 
-	PRIMARY KEY (booking_id), 
-	FOREIGN KEY(user_id) REFERENCES users (user_id), 
-	FOREIGN KEY(flight_id) REFERENCES flights (flight_id), 
+	booking_id INTEGER NOT NULL AUTO_INCREMENT,
+	user_id INTEGER,
+	flight_id INTEGER,
+	booking_date DATETIME,
+	passengers_count INTEGER NOT NULL,
+	total_amount FLOAT NOT NULL,
+	booking_status VARCHAR(20),
+	payment_status VARCHAR(20),
+	pnr_number VARCHAR(10) NOT NULL, travel_date DATETIME,
+	PRIMARY KEY (booking_id),
+	FOREIGN KEY(user_id) REFERENCES users (user_id),
+	FOREIGN KEY(flight_id) REFERENCES flights (flight_id),
 	UNIQUE (pnr_number)
 );
 
 CREATE TABLE payments (
-	payment_id INTEGER NOT NULL AUTO_INCREMENT, 
-	booking_id INTEGER, 
-	payment_amount FLOAT NOT NULL, 
-	payment_method VARCHAR(20) NOT NULL, 
-	payment_date DATETIME, 
-	transaction_id VARCHAR(100), 
-	payment_status VARCHAR(20), 
-	PRIMARY KEY (payment_id), 
-	FOREIGN KEY(booking_id) REFERENCES bookings (booking_id), 
+	payment_id INTEGER NOT NULL AUTO_INCREMENT,
+	booking_id INTEGER,
+	payment_amount FLOAT NOT NULL,
+	payment_method VARCHAR(20) NOT NULL,
+	payment_date DATETIME,
+	transaction_id VARCHAR(100),
+	payment_status VARCHAR(20),
+	PRIMARY KEY (payment_id),
+	FOREIGN KEY(booking_id) REFERENCES bookings (booking_id),
 	UNIQUE (transaction_id)
 );
 
 CREATE TABLE audit_log (
 		audit_id INTEGER PRIMARY KEY AUTO_INCREMENT AUTO_INCREMENT,
 		table_name VARCHAR(100) NOT NULL,
-		operation VARCHAR(50) NOT NULL, 
+		operation VARCHAR(50) NOT NULL,
 		record_id INTEGER NOT NULL,
 		old_value TEXT,
 		new_value TEXT,
@@ -104,7 +104,7 @@ CREATE UNIQUE INDEX ix_users_username ON users (username);
 
 -- views
 CREATE VIEW daily_flight_schedule AS
-        SELECT 
+        SELECT
             f.flight_id,
             f.flight_number,
             a.airline_name,
@@ -119,9 +119,9 @@ CREATE VIEW daily_flight_schedule AS
             f.total_seats,
             f.flight_status
         FROM flights f INNER JOIN airlines a ON f.airline_id = a.airline_id WHERE f.is_daily = 1 ORDER BY f.departure_time_only;
-	
+
 CREATE VIEW flight_revenue_summary AS
-        SELECT 
+        SELECT
             f.flight_id,
             f.flight_number,
             f.source_city,
@@ -134,9 +134,9 @@ CREATE VIEW flight_revenue_summary AS
             ROUND((CAST(f.total_seats - f.available_seats AS FLOAT) / f.total_seats * 100), 2) as occupancy_percentage
         FROM flights f LEFT JOIN bookings b ON f.flight_id = b.flight_id AND b.booking_status != 'cancelled'
         LEFT JOIN airlines a ON f.airline_id = a.airline_id GROUP BY f.flight_id;
-        
+
 CREATE VIEW user_booking_history AS
-        SELECT 
+        SELECT
             u.user_id,
             u.username,
             u.email,
@@ -154,7 +154,7 @@ CREATE VIEW user_booking_history AS
             b.payment_status
         FROM users u INNER JOIN bookings b ON u.user_id = b.user_id INNER JOIN flights f ON b.flight_id = f.flight_id
         INNER JOIN airlines a ON f.airline_id = a.airline_id ORDER BY b.booking_date DESC;
-        
+
 
 -- triggers
 -- trigger-1
@@ -278,9 +278,9 @@ DELIMITER ;
 -- Function 1: Calculate flight duration in hours
 DELIMITER $$
 CREATE FUNCTION fn_calculate_flight_duration(
-    dep_time DATETIME, 
+    dep_time DATETIME,
     arr_time DATETIME
-) 
+)
 RETURNS DECIMAL(10,2)
 READS SQL DATA
 DETERMINISTIC
@@ -295,15 +295,15 @@ DELIMITER ;
 DELIMITER $$
 CREATE FUNCTION fn_check_seat_availability(
     p_flight_id INT
-) 
+)
 RETURNS INT
 READS SQL DATA
 BEGIN
     DECLARE v_available_seats INT;
     SELECT available_seats INTO v_available_seats
-    FROM flights 
+    FROM flights
     WHERE flight_id = p_flight_id;
-    
+
     RETURN COALESCE(v_available_seats, 0);
 END$$
 DELIMITER ;
@@ -316,7 +316,7 @@ READS SQL DATA
 NOT DETERMINISTIC
 BEGIN
     DECLARE v_pnr VARCHAR(10);
-    SET v_pnr = UPPER(SUBSTRING(MD5(CONCAT(RAND(), NOW())), 1, 10));
+    SET v_pnr = UPPER(SUBSTRING(SHA2(CONCAT(RAND(), NOW()), 256), 1, 10));
     RETURN v_pnr;
 END$$
 DELIMITER ;
@@ -339,9 +339,9 @@ BEGIN
     DECLARE v_pnr VARCHAR(10);
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        ROLLBACK;
-        GET DIAGNOSTICS CONDITION 1 @sqlstate = RETURNED_SQLSTATE, 
+        GET DIAGNOSTICS CONDITION 1 @sqlstate = RETURNED_SQLSTATE,
         @errno = MYSQL_ERRNO, @text = MESSAGE_TEXT;
+        ROLLBACK;
         SET p_message = CONCAT('Error: ', @errno, ' - ', @text);
         SET p_booking_id = NULL;
     END;
@@ -349,7 +349,7 @@ BEGIN
     -- Check flight existence and get details
     SELECT available_seats, price
     INTO v_available_seats, v_flight_price
-    FROM flights 
+    FROM flights
     WHERE flight_id = p_flight_id;
     IF v_available_seats IS NULL THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Flight not found';
@@ -363,7 +363,7 @@ BEGIN
     SET v_total_amount = v_flight_price * p_passengers_count;
     -- Create booking
     INSERT INTO bookings (
-        user_id, flight_id, booking_date, passengers_count, 
+        user_id, flight_id, booking_date, passengers_count,
         total_amount, booking_status, payment_status, pnr_number, travel_date
     ) VALUES (
         p_user_id, p_flight_id, NOW(), p_passengers_count,
@@ -394,7 +394,7 @@ BEGIN
     -- Get booking details
     SELECT booking_status, total_amount
     INTO v_booking_status, v_total_amount
-    FROM bookings 
+    FROM bookings
     WHERE booking_id = p_booking_id;
     IF v_booking_status IS NULL THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Booking not found';
@@ -405,13 +405,13 @@ BEGIN
     -- Calculate refund (80% refund for example)
     SET v_refund_amount = v_total_amount * 0.8;
     -- Update booking status
-    UPDATE bookings 
+    UPDATE bookings
     SET booking_status = 'cancelled',
         payment_status = 'refunded'
     WHERE booking_id = p_booking_id;
     -- Record refund payment
     INSERT INTO payments (
-        booking_id, payment_amount, payment_method, 
+        booking_id, payment_amount, payment_method,
         payment_date, transaction_id, payment_status
     ) VALUES (
         p_booking_id, -v_refund_amount, 'refund',
@@ -438,16 +438,16 @@ BEGIN
     END;
     START TRANSACTION;
     -- Check if airline exists
-    SELECT COUNT(*) INTO v_airline_exists 
-    FROM airlines 
+    SELECT COUNT(*) INTO v_airline_exists
+    FROM airlines
     WHERE airline_id = p_airline_id;
     IF v_airline_exists = 0 THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Airline not found';
     END IF;
     -- Update prices
-    UPDATE flights 
+    UPDATE flights
     SET price = price * (1 + p_percentage_change/100)
-    WHERE airline_id = p_airline_id 
+    WHERE airline_id = p_airline_id
     AND flight_status != 'cancelled';
     SET v_affected_rows = ROW_COUNT();
     COMMIT;
@@ -468,7 +468,7 @@ BEGIN
     DECLARE v_avg_occupancy DECIMAL(5,2);
     DECLARE v_row_count INT DEFAULT 0;
     DECLARE airline_cursor CURSOR FOR
-        SELECT 
+        SELECT
             a.airline_name,
             COUNT(f.flight_id) as total_flights,
             COALESCE(SUM(b.total_amount), 0) as total_revenue,
@@ -499,13 +499,13 @@ BEGIN
     END LOOP;
     CLOSE airline_cursor;
     -- Update performance rating
-    UPDATE airline_report 
-    SET performance_rating = CASE 
+    UPDATE airline_report
+    SET performance_rating = CASE
         WHEN avg_occupancy >= 80 THEN 'Excellent'
-        WHEN avg_occupancy >= 60 THEN 'Good' 
+        WHEN avg_occupancy >= 60 THEN 'Good'
         WHEN avg_occupancy >= 40 THEN 'Average'
         ELSE 'Poor'
-    END;    
+    END;
     SELECT CONCAT(v_row_count, ' airlines processed') as summary;
     SELECT * FROM airline_report;
 END$$
@@ -523,7 +523,7 @@ BEGIN
     DECLARE v_customer_tier VARCHAR(20);
     DECLARE v_processed_count INT DEFAULT 0;
     DECLARE user_cursor CURSOR FOR
-        SELECT 
+        SELECT
             u.user_id,
             u.username,
             COUNT(b.booking_id) as total_bookings,
@@ -550,7 +550,7 @@ BEGIN
         END IF;
         SET v_processed_count = v_processed_count + 1;
         -- Determine customer tier based on spending and bookings
-        SET v_customer_tier = CASE 
+        SET v_customer_tier = CASE
             WHEN v_total_spent >= 5000 THEN 'Platinum'
             WHEN v_total_spent >= 2000 THEN 'Gold'
             WHEN v_total_spent >= 500 THEN 'Silver'
@@ -578,7 +578,7 @@ BEGIN
     DECLARE v_total_bookings INT;
     DECLARE v_flight_count INT DEFAULT 0;
     DECLARE flight_cursor CURSOR FOR
-        SELECT 
+        SELECT
             f.flight_number,
             f.source_city,
             f.destination_city,
@@ -611,8 +611,8 @@ BEGIN
     END LOOP;
     CLOSE flight_cursor;
     -- Update profitability rating
-    UPDATE flight_analysis 
-    SET profitability = CASE 
+    UPDATE flight_analysis
+    SET profitability = CASE
         WHEN occupancy_rate >= 75 AND total_revenue > 10000 THEN 'High'
         WHEN occupancy_rate >= 50 AND total_revenue > 5000 THEN 'Medium'
         WHEN occupancy_rate >= 25 THEN 'Low'

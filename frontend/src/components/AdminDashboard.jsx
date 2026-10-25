@@ -3,16 +3,23 @@ import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BookingTicket from "./BookingTicket";
+import TerminalBar from "./TerminalBar";
+import { SplitFlapText } from "./SplitFlap";
+import { terminalAudio } from "../utils/audio";
 
 const AdminDashboard = () => {
   const { user, logout, API_BASE } = useAuth();
   const navigate = useNavigate();
+
   const [flights, setFlights] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [airlines, setAirlines] = useState([]);
+
   const [showAddFlight, setShowAddFlight] = useState(false);
   const [showEditFlight, setShowEditFlight] = useState(false);
   const [editingFlightId, setEditingFlightId] = useState(null);
+  const [showAddAirline, setShowAddAirline] = useState(false);
+
   const [newFlight, setNewFlight] = useState({
     flight_number: "",
     airline_id: "",
@@ -24,14 +31,16 @@ const AdminDashboard = () => {
     price: 0,
     is_daily: false,
   });
+
   const [newAirline, setNewAirline] = useState({
     airline_name: "",
     airline_code: "",
   });
-  const [activeTab, setActiveTab] = useState("flights");
+
+  const [activeTab, setActiveTab] = useState("flights"); // flights | bookings | airlines
   const [selectedBookingId, setSelectedBookingId] = useState(null);
   const [showTicketModal, setShowTicketModal] = useState(false);
-  const [showAddAirline, setShowAddAirline] = useState(false);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     fetchFlights();
@@ -39,117 +48,56 @@ const AdminDashboard = () => {
     fetchAirlines();
   }, []);
 
+  const notify = (type, message) => {
+    setNotification({ type, message });
+    setTimeout(() => setNotification(null), 5000);
+  };
+
   const fetchFlights = async () => {
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("No token found, redirecting to login");
-        navigate("/login");
-        return;
-      }
-      const response = await axios.get(`${API_BASE}/admin/flights`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      if (!token) return navigate("/login");
+      const res = await axios.get(`${API_BASE}/admin/flights`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-      setFlights(response.data);
+      setFlights(res.data);
     } catch (error) {
-      console.error("Error fetching flights:", error);
-      if (error.response?.status === 401) {
-        console.error("Unauthorized access, redirecting to login");
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        navigate("/login");
-      }
+      if (error.response?.status === 401) navigate("/login");
     }
   };
 
   const fetchBookings = async () => {
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("No token found, redirecting to login");
-        navigate("/login");
-        return;
-      }
-      const response = await axios.get(`${API_BASE}/admin/bookings`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      if (!token) return navigate("/login");
+      const res = await axios.get(`${API_BASE}/admin/bookings`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-      setBookings(response.data);
+      setBookings(res.data);
     } catch (error) {
-      console.error("Error fetching bookings:", error);
-      if (error.response?.status === 401) {
-        console.error("Unauthorized access, redirecting to login");
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        navigate("/login");
-      }
+      if (error.response?.status === 401) navigate("/login");
     }
   };
 
   const fetchAirlines = async () => {
     try {
-      const response = await axios.get(`${API_BASE}/airlines`);
-      setAirlines(response.data);
+      const res = await axios.get(`${API_BASE}/airlines`);
+      setAirlines(res.data);
     } catch (error) {
-      console.error("Error fetching airlines:", error);
+      console.error(error);
     }
   };
 
-  const deleteFlight = async (flightId) => {
-    if (
-      !window.confirm(
-        "Are you sure you want to delete this flight? This action cannot be undone."
-      )
-    ) {
-      return;
-    }
-
-    try {
-      const token = localStorage.getItem("token");
-      await axios.delete(`${API_BASE}/admin/flights/${flightId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      fetchFlights();
-      alert("Flight deleted successfully!");
-    } catch (error) {
-      alert(
-        "Error deleting flight: " +
-          (error.response?.data?.detail || "Unknown error")
-      );
-    }
-  };
-
-  const addFlight = async (e) => {
+  const handleAddFlight = async (e) => {
     e.preventDefault();
+    terminalAudio.playBeep(700, 0.08);
     try {
       const token = localStorage.getItem("token");
-
-      // Prepare flight data for submission
-      const flightData = { ...newFlight };
-
-      // For daily flights, convert time to datetime with today's date
-      if (flightData.is_daily) {
-        const today = new Date().toISOString().split("T")[0];
-
-        if (!flightData.departure_time.includes("T")) {
-          flightData.departure_time = `${today}T${flightData.departure_time}:00`;
-        }
-
-        if (!flightData.arrival_time.includes("T")) {
-          flightData.arrival_time = `${today}T${flightData.arrival_time}:00`;
-        }
-      }
-
-      await axios.post(`${API_BASE}/flights`, flightData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      await axios.post(`${API_BASE}/admin/flights`, newFlight, {
+        headers: { Authorization: `Bearer ${token}` },
       });
+      terminalAudio.playGranted();
+      notify("success", "ATC CLEARANCE: New flight registered to manifest!");
       setShowAddFlight(false);
       setNewFlight({
         flight_number: "",
@@ -163,46 +111,81 @@ const AdminDashboard = () => {
         is_daily: false,
       });
       fetchFlights();
-      alert("Flight added successfully!");
     } catch (error) {
-      console.error("Full error:", error);
-      let errorMessage = "Unknown error";
-      if (error.response?.data?.detail) {
-        if (Array.isArray(error.response.data.detail)) {
-          errorMessage = error.response.data.detail
-            .map((err) => `${err.loc.join(".")}: ${err.msg}`)
-            .join("\n");
-        } else {
-          errorMessage = error.response.data.detail;
-        }
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
-      alert("Error adding flight:\n" + errorMessage);
+      terminalAudio.playAlert();
+      notify("error", "DISPATCH ERROR: " + (error.response?.data?.detail || "Failed to add flight"));
     }
   };
 
-  const addAirline = async (e) => {
+  const handleEditFlight = (flight) => {
+    terminalAudio.playBeep(600, 0.08);
+    setEditingFlightId(flight.flight_id);
+    setNewFlight({
+      flight_number: flight.flight_number,
+      airline_id: flight.airline_id,
+      source_city: flight.source_city,
+      destination_city: flight.destination_city,
+      departure_time: flight.departure_time ? flight.departure_time.slice(0, 16) : "",
+      arrival_time: flight.arrival_time ? flight.arrival_time.slice(0, 16) : "",
+      total_seats: flight.total_seats,
+      price: flight.price,
+      is_daily: Boolean(flight.is_daily),
+    });
+    setShowEditFlight(true);
+  };
+
+  const handleUpdateFlight = async (e) => {
     e.preventDefault();
+    terminalAudio.playBeep(700, 0.08);
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(`${API_BASE}/admin/flights/${editingFlightId}`, newFlight, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      terminalAudio.playGranted();
+      notify("success", "ATC CLEARANCE: Flight details revised!");
+      setShowEditFlight(false);
+      setEditingFlightId(null);
+      fetchFlights();
+    } catch (error) {
+      terminalAudio.playAlert();
+      notify("error", "UPDATE ERROR: " + (error.response?.data?.detail || "Failed to update flight"));
+    }
+  };
+
+  const handleDeleteFlight = async (flightId) => {
+    if (!window.confirm("CONFIRM REMOVAL of flight from active air space?")) return;
+    terminalAudio.playBeep(350, 0.08);
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`${API_BASE}/admin/flights/${flightId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      terminalAudio.playGranted();
+      notify("success", "FLIGHT STRICKEN FROM MANIFEST");
+      fetchFlights();
+    } catch (error) {
+      terminalAudio.playAlert();
+      notify("error", "DELETE ERROR: " + (error.response?.data?.detail || "Failed to delete"));
+    }
+  };
+
+  const handleAddAirline = async (e) => {
+    e.preventDefault();
+    terminalAudio.playBeep(700, 0.08);
     try {
       const token = localStorage.getItem("token");
       await axios.post(`${API_BASE}/admin/airlines`, newAirline, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
+      terminalAudio.playGranted();
+      notify("success", "CARRIER REGISTERED: New airline added to operations!");
       setShowAddAirline(false);
-      setNewAirline({
-        airline_name: "",
-        airline_code: "",
-      });
+      setNewAirline({ airline_name: "", airline_code: "" });
       fetchAirlines();
-      alert("Airline added successfully!");
     } catch (error) {
-      alert(
-        "Error adding airline: " +
-          (error.response?.data?.detail || "Unknown error")
-      );
+      terminalAudio.playAlert();
+      notify("error", "CARRIER ERROR: " + (error.response?.data?.detail || "Failed to add airline"));
     }
   };
 
@@ -211,857 +194,589 @@ const AdminDashboard = () => {
     navigate("/login");
   };
 
-  const handleEditFlight = (flight) => {
-    // For recurring flights, extract just the time (HH:MM)
-    let departureTime = "";
-    let arrivalTime = "";
-
-    if (flight.is_daily) {
-      // Daily flight - use time only
-      departureTime = flight.departure_time_only
-        ? flight.departure_time_only.substring(0, 5)
-        : flight.departure_time.split("T")[1]?.substring(0, 5) || "";
-      arrivalTime = flight.arrival_time_only
-        ? flight.arrival_time_only.substring(0, 5)
-        : flight.arrival_time.split("T")[1]?.substring(0, 5) || "";
-    } else {
-      // One-time flight - use full datetime
-      departureTime = flight.departure_time.substring(0, 16);
-      arrivalTime = flight.arrival_time.substring(0, 16);
-    }
-
-    // Set the form with flight data
-    setNewFlight({
-      flight_number: flight.flight_number,
-      airline_id: flight.airline_id,
-      source_city: flight.source_city,
-      destination_city: flight.destination_city,
-      departure_time: departureTime,
-      arrival_time: arrivalTime,
-      total_seats: flight.total_seats,
-      price: flight.price,
-      is_daily: flight.is_daily,
-    });
-    setEditingFlightId(flight.flight_id);
-    setShowAddFlight(false);
-    setShowEditFlight(true);
-
-    // Scroll to top to see the edit form
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }, 100);
-  };
-
-  const updateFlight = async (e) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem("token");
-
-      // Prepare flight data for submission
-      const flightData = { ...newFlight };
-
-      if (flightData.is_daily) {
-        const today = new Date().toISOString().split("T")[0];
-
-        if (!flightData.departure_time.includes("T")) {
-          flightData.departure_time = `${today}T${flightData.departure_time}:00`;
-        }
-
-        if (!flightData.arrival_time.includes("T")) {
-          flightData.arrival_time = `${today}T${flightData.arrival_time}:00`;
-        }
-      }
-
-      await axios.put(`${API_BASE}/flights/${editingFlightId}`, flightData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setShowEditFlight(false);
-      setEditingFlightId(null);
-      setNewFlight({
-        flight_number: "",
-        airline_id: "",
-        source_city: "",
-        destination_city: "",
-        departure_time: "",
-        arrival_time: "",
-        total_seats: 180,
-        price: 0,
-        is_daily: false,
-      });
-      fetchFlights();
-      alert("Flight updated successfully!");
-    } catch (error) {
-      console.error("Full error:", error);
-      let errorMessage = "Unknown error";
-      if (error.response?.data?.detail) {
-        if (Array.isArray(error.response.data.detail)) {
-          errorMessage = error.response.data.detail
-            .map((err) => `${err.loc.join(".")}: ${err.msg}`)
-            .join("\n");
-        } else {
-          errorMessage = error.response.data.detail;
-        }
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
-      alert("Error updating flight:\n" + errorMessage);
-    }
-  };
-
-  const cancelEdit = () => {
-    setShowEditFlight(false);
-    setEditingFlightId(null);
-    setNewFlight({
-      flight_number: "",
-      airline_id: "",
-      source_city: "",
-      destination_city: "",
-      departure_time: "",
-      arrival_time: "",
-      total_seats: 180,
-      price: 0,
-      is_daily: false,
-    });
-  };
-
-  const handleViewTicket = (bookingId) => {
-    setSelectedBookingId(bookingId);
-    setShowTicketModal(true);
-  };
-
-  const closeTicketModal = () => {
-    setShowTicketModal(false);
-    setSelectedBookingId(null);
-  };
-
-  // Handle time input changes for daily flights
-  const handleTimeChange = (field, value) => {
-    setNewFlight((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
   return (
-    <div className="dashboard">
-      <header className="dashboard-header">
-        <div className="header-content">
-          <h1>Admin Dashboard</h1>
-          <div className="user-info">
-            <span>Welcome, {user?.username}</span>
-            <button onClick={handleLogout} className="logout-button">
-              Logout
-            </button>
+    <div className="aero-terminal-page">
+      <TerminalBar user={user} onLogout={handleLogout} />
+
+      {notification && (
+        <div className={`terminal-toast-banner ${notification.type}`}>
+          <div className="toast-inner">
+            <span className="toast-icon">{notification.type === "success" ? "✔" : "⚠"}</span>
+            <span className="toast-text">{notification.message}</span>
+            <button onClick={() => setNotification(null)} className="toast-close-btn">✕</button>
           </div>
         </div>
-      </header>
+      )}
 
-      <nav className="dashboard-nav">
-        <div className="nav-content">
-          <button
-            onClick={() => setActiveTab("flights")}
-            className={`nav-button ${activeTab === "flights" ? "active" : ""}`}
-          >
-            Manage Flights
-          </button>
-          <button
-            onClick={() => setActiveTab("bookings")}
-            className={`nav-button ${activeTab === "bookings" ? "active" : ""}`}
-          >
-            All Bookings
-          </button>
-          <button
-            onClick={() => setActiveTab("airlines")}
-            className={`nav-button ${activeTab === "airlines" ? "active" : ""}`}
-          >
-            Manage Airlines
-          </button>
+      {/* ATC TOP HEADER */}
+      <div className="cockpit-sub-header">
+        <div className="breadcrumb-box">
+          <span className="bc-main">AIR TRAFFIC CONTROL</span>
+          <span className="bc-slash">/</span>
+          <span className="bc-sub">MASTER OPERATIONS</span>
         </div>
-      </nav>
 
-      <main className="dashboard-main">
+        <nav className="cockpit-nav-pills">
+          <button
+            onClick={() => {
+              terminalAudio.playBeep(520, 0.06);
+              setActiveTab("flights");
+            }}
+            className={`cockpit-pill-btn ${activeTab === "flights" ? "active-glow" : ""}`}
+          >
+            ✈ FLIGHTS MANIFEST ({flights.length})
+          </button>
+          <button
+            onClick={() => {
+              terminalAudio.playBeep(520, 0.06);
+              setActiveTab("bookings");
+            }}
+            className={`cockpit-pill-btn ${activeTab === "bookings" ? "active-glow" : ""}`}
+          >
+            📋 BOOKINGS LEDGER ({bookings.length})
+          </button>
+          <button
+            onClick={() => {
+              terminalAudio.playBeep(520, 0.06);
+              setActiveTab("airlines");
+            }}
+            className={`cockpit-pill-btn ${activeTab === "airlines" ? "active-glow" : ""}`}
+          >
+            🏢 FLEET AIRLINES ({airlines.length})
+          </button>
+        </nav>
+
+        <div className="user-clearance-tag admin-clearance">
+          <span className="tag-pilot-ico">🛡️</span>
+          <span className="tag-name">{user?.username?.toUpperCase()}</span>
+          <span className="tag-level">CHIEF CONTROLLER</span>
+        </div>
+      </div>
+
+      <main className="cockpit-main-content">
+        {/* ATC TELEMETRY STATS COUNTER BAR */}
+        <div className="atc-stats-strip">
+          <div className="atc-stat-card">
+            <span className="stat-label">ACTIVE FLIGHTS</span>
+            <span className="stat-value">{flights.length}</span>
+            <span className="stat-sub">MONITORED</span>
+          </div>
+          <div className="atc-stat-card">
+            <span className="stat-label">TOTAL BOOKINGS</span>
+            <span className="stat-value">{bookings.length}</span>
+            <span className="stat-sub">CONFIRMED/STANDBY</span>
+          </div>
+          <div className="atc-stat-card">
+            <span className="stat-label">REGISTERED AIRLINES</span>
+            <span className="stat-value">{airlines.length}</span>
+            <span className="stat-sub">GLOBAL FLEET</span>
+          </div>
+          <div className="atc-stat-card">
+            <span className="stat-label">SYSTEM HEALTH</span>
+            <span className="stat-value green">100%</span>
+            <span className="stat-sub">ATC RADAR ACTIVE</span>
+          </div>
+        </div>
+
+        {/* ======================================================== */}
+        {/* TAB 1: FLIGHTS MANIFEST                                 */}
+        {/* ======================================================== */}
         {activeTab === "flights" && (
-          <div className="tab-content">
-            <div className="card">
-              <div className="card-header">
-                <h2>Manage Flights</h2>
+          <div className="departure-board-frame">
+            <span className="hex-screw top-left"></span>
+            <span className="hex-screw top-right"></span>
+            <span className="hex-screw bottom-left"></span>
+            <span className="hex-screw bottom-right"></span>
+
+            <div className="board-header-strip">
+              <div className="board-title-group">
+                <h2 className="board-main-title">AIR TRAFFIC FLIGHT MANIFEST</h2>
+                <span className="board-model-sub">ALL REGISTERED ROUTES & FLIGHT VECTORS</span>
+              </div>
+
+              <div className="board-actions">
                 <button
-                  onClick={() => setShowAddFlight(true)}
-                  className="add-button"
+                  onClick={() => {
+                    terminalAudio.playBeep(660, 0.08);
+                    setShowAddFlight(true);
+                  }}
+                  className="cockpit-search-btn"
                 >
-                  Add New Flight
+                  + DISPATCH NEW FLIGHT
                 </button>
               </div>
+            </div>
 
-              {showAddFlight && (
-                <div className="add-flight-form">
-                  <h3>Add New Flight</h3>
-                  <form onSubmit={addFlight} className="flight-form">
-                    <input
-                      type="text"
-                      placeholder="Flight Number"
-                      value={newFlight.flight_number}
-                      onChange={(e) =>
-                        setNewFlight({
-                          ...newFlight,
-                          flight_number: e.target.value,
-                        })
-                      }
-                      className="form-input"
-                      required
-                    />
+            <div className="split-board-table-header">
+              <span className="col-flight">FLIGHT NO</span>
+              <span className="col-route">ORIGIN ➔ DESTINATION</span>
+              <span className="col-time">SCHEDULE</span>
+              <span className="col-seats">CAPACITY</span>
+              <span className="col-price">PRICE</span>
+              <span className="col-status">AIRLINE</span>
+              <span className="col-action">CONTROLS</span>
+            </div>
 
-                    <select
-                      value={newFlight.airline_id}
-                      onChange={(e) =>
-                        setNewFlight({
-                          ...newFlight,
-                          airline_id: parseInt(e.target.value),
-                        })
-                      }
-                      className="form-input"
-                      required
-                    >
-                      <option value="">Select Airline</option>
-                      {airlines.map((airline) => (
-                        <option
-                          key={airline.airline_id}
-                          value={airline.airline_id}
-                        >
-                          {airline.airline_name} ({airline.airline_code})
-                        </option>
-                      ))}
-                    </select>
-
-                    <input
-                      type="text"
-                      placeholder="Source City"
-                      value={newFlight.source_city}
-                      onChange={(e) =>
-                        setNewFlight({
-                          ...newFlight,
-                          source_city: e.target.value,
-                        })
-                      }
-                      className="form-input"
-                      required
-                    />
-                    <input
-                      type="text"
-                      placeholder="Destination City"
-                      value={newFlight.destination_city}
-                      onChange={(e) =>
-                        setNewFlight({
-                          ...newFlight,
-                          destination_city: e.target.value,
-                        })
-                      }
-                      className="form-input"
-                      required
-                    />
-
-                    {/* Daily Flight Option */}
-                    <div className="daily-flight-option">
-                      <label className="checkbox-label">
-                        <input
-                          type="checkbox"
-                          checked={newFlight.is_daily}
-                          onChange={(e) =>
-                            setNewFlight({
-                              ...newFlight,
-                              is_daily: e.target.checked,
-                              departure_time: "",
-                              arrival_time: "",
-                            })
-                          }
-                          className="checkbox-input"
-                        />
-                        <span className="checkbox-text">
-                          Daily Flight (All Days)
-                        </span>
-                        <span className="checkbox-help">
-                          Check this for flights that operate every day at the
-                          same time
-                        </span>
-                      </label>
+            <div className="departure-rows-container">
+              {flights.map((f) => (
+                <div key={f.flight_id} className="departure-flight-row">
+                  <div className="row-col col-flight">
+                    <SplitFlapText text={f.flight_number} length={6} color="ivory" animate={false} />
+                  </div>
+                  <div className="row-col col-route">
+                    <div className="flap-route-inline">
+                      <SplitFlapText text={(f.source_city || "---").slice(0, 3)} length={3} color="ivory" animate={false} />
+                      <span className="flap-route-plane">✈</span>
+                      <SplitFlapText text={(f.destination_city || "---").slice(0, 3)} length={3} color="ivory" animate={false} />
                     </div>
-
-                    {/* Time/DateTime inputs based on flight type */}
-                    {newFlight.is_daily ? (
-                      <>
-                        <div className="info-banner">
-                          🔄 <strong>Daily Flight</strong> - Operates every day.
-                          Enter time only.
-                        </div>
-                        <label className="form-label">Departure Time</label>
-                        <input
-                          type="time"
-                          value={newFlight.departure_time}
-                          onChange={(e) =>
-                            handleTimeChange("departure_time", e.target.value)
-                          }
-                          className="form-input"
-                          required
-                        />
-                        <label className="form-label">Arrival Time</label>
-                        <input
-                          type="time"
-                          value={newFlight.arrival_time}
-                          onChange={(e) =>
-                            handleTimeChange("arrival_time", e.target.value)
-                          }
-                          className="form-input"
-                          required
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <div className="info-banner">
-                          📅 <strong>One-Time Flight</strong> - Enter specific
-                          date and time.
-                        </div>
-                        <label className="form-label">
-                          Departure Date & Time
-                        </label>
-                        <input
-                          type="datetime-local"
-                          value={newFlight.departure_time}
-                          onChange={(e) =>
-                            handleTimeChange("departure_time", e.target.value)
-                          }
-                          className="form-input"
-                          required
-                        />
-                        <label className="form-label">
-                          Arrival Date & Time
-                        </label>
-                        <input
-                          type="datetime-local"
-                          value={newFlight.arrival_time}
-                          onChange={(e) =>
-                            handleTimeChange("arrival_time", e.target.value)
-                          }
-                          className="form-input"
-                          required
-                        />
-                      </>
-                    )}
-
-                    <input
-                      type="number"
-                      placeholder="Total Seats"
-                      value={newFlight.total_seats}
-                      onChange={(e) =>
-                        setNewFlight({
-                          ...newFlight,
-                          total_seats: parseInt(e.target.value),
-                        })
-                      }
-                      className="form-input"
-                      required
-                    />
-                    <input
-                      type="number"
-                      placeholder="Price"
-                      value={newFlight.price || ""}
-                      onChange={(e) =>
-                        setNewFlight({
-                          ...newFlight,
-                          price: parseFloat(e.target.value) || 0,
-                        })
-                      }
-                      className="form-input"
-                      required
-                    />
-                    <div className="form-actions">
-                      <button type="submit" className="submit-button">
-                        Add Flight
+                    <span className="full-route-names">{f.source_city} to {f.destination_city}</span>
+                  </div>
+                  <div className="row-col col-time">
+                    <span className="time-val">
+                      {f.departure_time_only || (f.departure_time ? new Date(f.departure_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "DAILY")}
+                    </span>
+                    {f.is_daily && <span className="daily-tag">DAILY</span>}
+                  </div>
+                  <div className="row-col col-seats">
+                    <span className="seats-count">{f.available_seats || f.total_seats} / {f.total_seats} SEATS</span>
+                  </div>
+                  <div className="row-col col-price">
+                    <span className="price-tag">₹{f.price}</span>
+                  </div>
+                  <div className="row-col col-status">
+                    <span className="airline-mini-badge">{f.airline_name || "CARRIER"}</span>
+                  </div>
+                  <div className="row-col col-action">
+                    <div className="admin-actions-pair">
+                      <button
+                        onClick={() => handleEditFlight(f)}
+                        className="admin-edit-btn"
+                        title="Edit Flight"
+                      >
+                        ✎ EDIT
                       </button>
                       <button
-                        type="button"
-                        onClick={() => setShowAddFlight(false)}
-                        className="cancel-button"
+                        onClick={() => handleDeleteFlight(f.flight_id)}
+                        className="admin-del-btn"
+                        title="Delete Flight"
                       >
-                        Cancel
+                        ✕
                       </button>
-                    </div>
-                  </form>
-                </div>
-              )}
-
-              {showEditFlight && (
-                <div className="add-flight-form edit-flight-form">
-                  <h3>Edit Flight (ID: {editingFlightId})</h3>
-                  <form onSubmit={updateFlight} className="flight-form">
-                    <input
-                      type="text"
-                      placeholder="Flight Number"
-                      value={newFlight.flight_number}
-                      onChange={(e) =>
-                        setNewFlight({
-                          ...newFlight,
-                          flight_number: e.target.value,
-                        })
-                      }
-                      className="form-input"
-                      required
-                    />
-
-                    <select
-                      value={newFlight.airline_id}
-                      onChange={(e) =>
-                        setNewFlight({
-                          ...newFlight,
-                          airline_id: parseInt(e.target.value),
-                        })
-                      }
-                      className="form-input"
-                      required
-                    >
-                      <option value="">Select Airline</option>
-                      {airlines.map((airline) => (
-                        <option
-                          key={airline.airline_id}
-                          value={airline.airline_id}
-                        >
-                          {airline.airline_name} ({airline.airline_code})
-                        </option>
-                      ))}
-                    </select>
-
-                    <input
-                      type="text"
-                      placeholder="Source City"
-                      value={newFlight.source_city}
-                      onChange={(e) =>
-                        setNewFlight({
-                          ...newFlight,
-                          source_city: e.target.value,
-                        })
-                      }
-                      className="form-input"
-                      required
-                    />
-                    <input
-                      type="text"
-                      placeholder="Destination City"
-                      value={newFlight.destination_city}
-                      onChange={(e) =>
-                        setNewFlight({
-                          ...newFlight,
-                          destination_city: e.target.value,
-                        })
-                      }
-                      className="form-input"
-                      required
-                    />
-
-                    {/* Daily Flight Option */}
-                    <div className="daily-flight-option">
-                      <label className="checkbox-label">
-                        <input
-                          type="checkbox"
-                          checked={newFlight.is_daily}
-                          onChange={(e) =>
-                            setNewFlight({
-                              ...newFlight,
-                              is_daily: e.target.checked,
-                              departure_time: "",
-                              arrival_time: "",
-                            })
-                          }
-                          className="checkbox-input"
-                        />
-                        <span className="checkbox-text">
-                          Daily Flight (All Days)
-                        </span>
-                      </label>
-                    </div>
-
-                    {/* Time/DateTime inputs based on flight type */}
-                    {newFlight.is_daily ? (
-                      <>
-                        <div className="info-banner">
-                          🔄 Daily Flight - Enter time only
-                        </div>
-                        <input
-                          type="time"
-                          placeholder="Departure Time"
-                          value={newFlight.departure_time}
-                          onChange={(e) =>
-                            handleTimeChange("departure_time", e.target.value)
-                          }
-                          className="form-input"
-                          required
-                        />
-                        <input
-                          type="time"
-                          placeholder="Arrival Time"
-                          value={newFlight.arrival_time}
-                          onChange={(e) =>
-                            handleTimeChange("arrival_time", e.target.value)
-                          }
-                          className="form-input"
-                          required
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <div className="info-banner">
-                          📅 One-Time Flight - Enter date and time
-                        </div>
-                        <input
-                          type="datetime-local"
-                          placeholder="Departure Time"
-                          value={newFlight.departure_time}
-                          onChange={(e) =>
-                            setNewFlight({
-                              ...newFlight,
-                              departure_time: e.target.value,
-                            })
-                          }
-                          className="form-input"
-                          required
-                        />
-                        <input
-                          type="datetime-local"
-                          placeholder="Arrival Time"
-                          value={newFlight.arrival_time}
-                          onChange={(e) =>
-                            setNewFlight({
-                              ...newFlight,
-                              arrival_time: e.target.value,
-                            })
-                          }
-                          className="form-input"
-                          required
-                        />
-                      </>
-                    )}
-
-                    <input
-                      type="number"
-                      placeholder="Total Seats"
-                      value={newFlight.total_seats}
-                      onChange={(e) =>
-                        setNewFlight({
-                          ...newFlight,
-                          total_seats: parseInt(e.target.value),
-                        })
-                      }
-                      className="form-input"
-                      required
-                    />
-                    <input
-                      type="number"
-                      placeholder="Price"
-                      value={newFlight.price}
-                      onChange={(e) =>
-                        setNewFlight({
-                          ...newFlight,
-                          price: parseFloat(e.target.value),
-                        })
-                      }
-                      className="form-input"
-                      required
-                    />
-                    <div className="form-actions">
-                      <button type="submit" className="submit-button">
-                        Update Flight
-                      </button>
-                      <button
-                        type="button"
-                        onClick={cancelEdit}
-                        className="cancel-button"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              )}
-
-              <div className="flights-list">
-                {flights.map((flight) => (
-                  <div
-                    key={flight.flight_id}
-                    className="flight-card admin-flight-card"
-                  >
-                    <div className="flight-info">
-                      <div className="flight-header">
-                        <h3>{flight.flight_number}</h3>
-                        <div className="flight-badges">
-                          <span className="flight-id">
-                            ID: {flight.flight_id}
-                          </span>
-                          {flight.is_daily && (
-                            <span className="daily-badge">🔄 Daily Flight</span>
-                          )}
-                          <span className="airline-badge">
-                            {flight.airline_name} ({flight.airline_code})
-                          </span>
-                        </div>
-                      </div>
-                      <p className="route">
-                        {flight.source_city} → {flight.destination_city}
-                      </p>
-                      <div className="flight-details">
-                        {flight.is_daily ? (
-                          <>
-                            <p className="flight-time">
-                              <span className="time-label">Departure:</span>
-                              {flight.departure_time_only ||
-                                new Date(
-                                  flight.departure_time
-                                ).toLocaleTimeString([], {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                })}{" "}
-                              (Daily)
-                            </p>
-                            <p className="flight-time">
-                              <span className="time-label">Arrival:</span>
-                              {flight.arrival_time_only ||
-                                new Date(
-                                  flight.arrival_time
-                                ).toLocaleTimeString([], {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                })}{" "}
-                              (Daily)
-                            </p>
-                          </>
-                        ) : (
-                          <>
-                            <p className="flight-time">
-                              <span className="time-label">Departure:</span>
-                              {new Date(flight.departure_time).toLocaleString()}
-                            </p>
-                            <p className="flight-time">
-                              <span className="time-label">Arrival:</span>
-                              {new Date(flight.arrival_time).toLocaleString()}
-                            </p>
-                          </>
-                        )}
-                      </div>
-                      <div className="flight-capacity">
-                        <p className="flight-seats">
-                          {flight.is_daily ? (
-                            <>
-                              <span className="seats-total">
-                                {flight.total_seats}
-                              </span>
-                              <span className="seats-label">
-                                seats available daily
-                              </span>
-                            </>
-                          ) : (
-                            <>
-                              <span className="seats-available">
-                                {flight.available_seats}
-                              </span>
-                              <span className="seats-divider">/</span>
-                              <span className="seats-total">
-                                {flight.total_seats}
-                              </span>
-                              <span className="seats-label">seats</span>
-                            </>
-                          )}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flight-actions admin-actions">
-                      <div className="flight-price-section">
-                        <p className="flight-price">
-                          ₹{flight.price.toLocaleString()}
-                        </p>
-                        <p
-                          className={`flight-status status-${flight.flight_status}`}
-                        >
-                          {flight.flight_status}
-                        </p>
-                      </div>
-                      <div className="admin-buttons">
-                        <button
-                          onClick={() => handleEditFlight(flight)}
-                          className="edit-button"
-                          title="Edit Flight"
-                        >
-                          <span className="edit-icon">✏️</span>
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => deleteFlight(flight.flight_id)}
-                          className="delete-button"
-                          title="Delete Flight"
-                        >
-                          <span className="delete-icon">🗑️</span>
-                          Delete
-                        </button>
-                      </div>
                     </div>
                   </div>
-                ))}
-                {flights.length === 0 && (
-                  <div className="no-results">
-                    <p>
-                      No flights found. Add your first flight to get started!
-                    </p>
-                  </div>
-                )}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
 
+        {/* ======================================================== */}
+        {/* TAB 2: BOOKINGS LEDGER                                   */}
+        {/* ======================================================== */}
         {activeTab === "bookings" && (
-          <div className="tab-content">
-            <div className="card">
-              <h2>All Bookings</h2>
-              <div className="bookings-list">
-                {bookings.map((booking) => (
-                  <div key={booking.booking_id} className="booking-card">
-                    <div className="booking-info">
-                      <h3>PNR: {booking.pnr_number}</h3>
-                      <p className="booking-detail">
-                        User ID: {booking.user_id} | {booking.passengers_count}{" "}
-                        passenger(s)
-                      </p>
-                      <p className="booking-time">
-                        Booked on:{" "}
-                        {new Date(booking.booking_date).toLocaleString()}
-                      </p>
-                      <p className="booking-status">
-                        Status:{" "}
-                        <span className={`status-${booking.booking_status}`}>
-                          {booking.booking_status}
-                        </span>
-                      </p>
+          <div className="bolted-chassis-frame">
+            <span className="hex-screw top-left"></span>
+            <span className="hex-screw top-right"></span>
+            <span className="hex-screw bottom-left"></span>
+            <span className="hex-screw bottom-right"></span>
+
+            <div className="chassis-header">
+              <h2 className="chassis-title">ALL PASSENGER RESERVATIONS</h2>
+              <span className="chassis-sub">MASTER AIRLINE BOOKING DISPATCH</span>
+            </div>
+
+            <div className="bookings-grid-deck">
+              {bookings.map((b) => (
+                <div key={b.booking_id} className="booking-manifest-card">
+                  <div className="manifest-card-header">
+                    <div className="pnr-strip">
+                      <span className="pnr-tag">PNR</span>
+                      <span className="pnr-val">{b.pnr_number}</span>
                     </div>
-                    <div className="booking-actions">
-                      <p className="booking-amount">₹{booking.total_amount}</p>
-                      <p className="payment-status">
-                        Payment: {booking.payment_status}
-                      </p>
-                      <button
-                        onClick={() => handleViewTicket(booking.booking_id)}
-                        className="view-ticket-button"
-                        title="View Booking Ticket"
-                      >
-                        🎫 View Ticket
-                      </button>
+                    <span className={`manifest-status-pill status-${b.booking_status}`}>
+                      {b.booking_status?.toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="manifest-route-info">
+                    <div className="flight-id-badge">FLIGHT: {b.flight?.flight_number}</div>
+                    <div className="route-arrow-row">
+                      <span>{b.flight?.source_city}</span>
+                      <span>✈ ── ✈</span>
+                      <span>{b.flight?.destination_city}</span>
                     </div>
                   </div>
-                ))}
-              </div>
+                  <div className="manifest-details-grid">
+                    <div className="m-detail">
+                      <span className="m-label">PASSENGER:</span>
+                      <span className="m-val">{b.user?.username || "TRAVELER"}</span>
+                    </div>
+                    <div className="m-detail">
+                      <span className="m-label">COUNT:</span>
+                      <span className="m-val">{b.passengers_count} PAX</span>
+                    </div>
+                    <div className="m-detail">
+                      <span className="m-label">TOTAL FARE:</span>
+                      <span className="m-val fare-price">₹{b.total_amount}</span>
+                    </div>
+                    <div className="m-detail">
+                      <span className="m-label">PAYMENT:</span>
+                      <span className="m-val">{b.payment_status}</span>
+                    </div>
+                  </div>
+                  <div className="manifest-actions-row">
+                    <button
+                      onClick={() => {
+                        setSelectedBookingId(b.booking_id);
+                        setShowTicketModal(true);
+                      }}
+                      className="manifest-view-ticket-btn"
+                    >
+                      🎫 VIEW PASS
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
 
+        {/* ======================================================== */}
+        {/* TAB 3: AIRLINES FLEET                                    */}
+        {/* ======================================================== */}
         {activeTab === "airlines" && (
-          <div className="tab-content">
-            <div className="card">
-              <div className="card-header">
-                <h2>Manage Airlines</h2>
+          <div className="bolted-chassis-frame">
+            <span className="hex-screw top-left"></span>
+            <span className="hex-screw top-right"></span>
+            <span className="hex-screw bottom-left"></span>
+            <span className="hex-screw bottom-right"></span>
+
+            <div className="chassis-header">
+              <h2 className="chassis-title">REGISTERED AIRLINE FLEETS</h2>
+              <span className="chassis-sub">OFFICIAL CARRIER DIRECTORY</span>
+              <div className="chassis-actions">
                 <button
                   onClick={() => setShowAddAirline(true)}
-                  className="add-button"
+                  className="cockpit-search-btn"
                 >
-                  Add New Airline
+                  + REGISTER AIRLINE
                 </button>
               </div>
+            </div>
 
-              {showAddAirline && (
-                <div className="add-flight-form">
-                  <h3>Add New Airline</h3>
-                  <form onSubmit={addAirline} className="flight-form">
-                    <input
-                      type="text"
-                      placeholder="Airline Name"
-                      value={newAirline.airline_name}
-                      onChange={(e) =>
-                        setNewAirline({
-                          ...newAirline,
-                          airline_name: e.target.value,
-                        })
-                      }
-                      className="form-input"
-                      required
-                    />
-                    <input
-                      type="text"
-                      placeholder="Airline Code (e.g., AI, IND)"
-                      value={newAirline.airline_code}
-                      onChange={(e) =>
-                        setNewAirline({
-                          ...newAirline,
-                          airline_code: e.target.value.toUpperCase(),
-                        })
-                      }
-                      className="form-input"
-                      required
-                      maxLength="3"
-                    />
-                    <div className="form-actions">
-                      <button type="submit" className="submit-button">
-                        Add Airline
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setShowAddAirline(false)}
-                        className="cancel-button"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </form>
+            <div className="airlines-grid">
+              {airlines.map((a) => (
+                <div key={a.airline_id} className="airline-card-retro">
+                  <div className="airline-card-top">
+                    <span className="air-icon">✈</span>
+                    <span className="air-code">{a.airline_code}</span>
+                  </div>
+                  <h3 className="air-name">{a.airline_name}</h3>
+                  <div className="air-status">
+                    <span className="beacon-led pulse-green"></span>
+                    <span>AUTHORITY: CERTIFIED CARRIER</span>
+                  </div>
                 </div>
-              )}
-
-              <div className="flights-list">
-                {airlines.map((airline) => (
-                  <div key={airline.airline_id} className="flight-card">
-                    <div className="flight-info">
-                      <h3>{airline.airline_name}</h3>
-                      <p className="route">Code: {airline.airline_code}</p>
-                      <p className="flight-id">ID: {airline.airline_id}</p>
-                    </div>
-                  </div>
-                ))}
-                {airlines.length === 0 && (
-                  <div className="no-results">
-                    <p>No airlines found. Add your first airline!</p>
-                  </div>
-                )}
-              </div>
+              ))}
             </div>
           </div>
         )}
       </main>
 
-      {/* Ticket Modal */}
+      {/* ADD / EDIT FLIGHT MODAL */}
+      {(showAddFlight || showEditFlight) && (
+        <div className="modal-backdrop">
+          <div className="modal-chassis-window small-confirm">
+            <div className="window-header-bar">
+              <div className="window-title-left">
+                <span className="plane-icon">✈</span>
+                <span className="window-title">
+                  {showEditFlight ? "EDIT FLIGHT DISPATCH" : "REGISTER NEW FLIGHT"}
+                </span>
+              </div>
+              <button
+                onClick={() => {
+                  setShowAddFlight(false);
+                  setShowEditFlight(false);
+                }}
+                className="modal-close-cross"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form
+              onSubmit={showEditFlight ? handleUpdateFlight : handleAddFlight}
+              className="retro-admin-form"
+            >
+              <div className="form-two-col">
+                <div className="terminal-input-group">
+                  <label className="terminal-label">FLIGHT NUMBER</label>
+                  <input
+                    type="text"
+                    required
+                    className="terminal-input"
+                    placeholder="e.g. AI-202"
+                    value={newFlight.flight_number}
+                    onChange={(e) =>
+                      setNewFlight({ ...newFlight, flight_number: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="terminal-input-group">
+                  <label className="terminal-label">AIRLINE</label>
+                  <select
+                    required
+                    className="terminal-input"
+                    value={newFlight.airline_id}
+                    onChange={(e) =>
+                      setNewFlight({ ...newFlight, airline_id: e.target.value })
+                    }
+                  >
+                    <option value="">SELECT CARRIER</option>
+                    {airlines.map((a) => (
+                      <option key={a.airline_id} value={a.airline_id}>
+                        {a.airline_name} ({a.airline_code})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-two-col">
+                <div className="terminal-input-group">
+                  <label className="terminal-label">SOURCE CITY</label>
+                  <input
+                    type="text"
+                    required
+                    className="terminal-input"
+                    placeholder="e.g. NYC or MP"
+                    value={newFlight.source_city}
+                    onChange={(e) =>
+                      setNewFlight({ ...newFlight, source_city: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="terminal-input-group">
+                  <label className="terminal-label">DESTINATION CITY</label>
+                  <input
+                    type="text"
+                    required
+                    className="terminal-input"
+                    placeholder="e.g. LND or DEH"
+                    value={newFlight.destination_city}
+                    onChange={(e) =>
+                      setNewFlight({
+                        ...newFlight,
+                        destination_city: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="form-two-col">
+                <div className="terminal-input-group">
+                  <label className="terminal-label">DEPARTURE TIME</label>
+                  <input
+                    type="datetime-local"
+                    required
+                    className="terminal-input"
+                    value={newFlight.departure_time}
+                    onChange={(e) =>
+                      setNewFlight({ ...newFlight, departure_time: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="terminal-input-group">
+                  <label className="terminal-label">ARRIVAL TIME</label>
+                  <input
+                    type="datetime-local"
+                    required
+                    className="terminal-input"
+                    value={newFlight.arrival_time}
+                    onChange={(e) =>
+                      setNewFlight({ ...newFlight, arrival_time: e.target.value })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="form-two-col">
+                <div className="terminal-input-group">
+                  <label className="terminal-label">TOTAL SEATS</label>
+                  <input
+                    type="number"
+                    required
+                    min="1"
+                    className="terminal-input"
+                    value={newFlight.total_seats}
+                    onChange={(e) =>
+                      setNewFlight({
+                        ...newFlight,
+                        total_seats: parseInt(e.target.value) || 0,
+                      })
+                    }
+                  />
+                </div>
+                <div className="terminal-input-group">
+                  <label className="terminal-label">PRICE (₹)</label>
+                  <input
+                    type="number"
+                    required
+                    min="1"
+                    className="terminal-input"
+                    value={newFlight.price}
+                    onChange={(e) =>
+                      setNewFlight({
+                        ...newFlight,
+                        price: parseFloat(e.target.value) || 0,
+                      })
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="terminal-input-group">
+                <label className="checkbox-label-retro">
+                  <input
+                    type="checkbox"
+                    checked={newFlight.is_daily}
+                    onChange={(e) =>
+                      setNewFlight({ ...newFlight, is_daily: e.target.checked })
+                    }
+                  />
+                  <span>RUNS AS DAILY RECURRING SCHEDULE</span>
+                </label>
+              </div>
+
+              <div className="confirm-btn-actions">
+                <button type="submit" className="confirm-booking-btn">
+                  {showEditFlight ? "SAVE REVISION" : "DISPATCH FLIGHT"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAddFlight(false);
+                    setShowEditFlight(false);
+                  }}
+                  className="cancel-modal-btn"
+                >
+                  CANCEL
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ADD AIRLINE MODAL */}
+      {showAddAirline && (
+        <div className="modal-backdrop">
+          <div className="modal-chassis-window small-confirm">
+            <div className="window-header-bar">
+              <div className="window-title-left">
+                <span className="plane-icon">✈</span>
+                <span className="window-title">REGISTER AIRLINE CARRIER</span>
+              </div>
+              <button
+                onClick={() => setShowAddAirline(false)}
+                className="modal-close-cross"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleAddAirline} className="retro-admin-form">
+              <div className="terminal-input-group">
+                <label className="terminal-label">CARRIER FULL NAME</label>
+                <input
+                  type="text"
+                  required
+                  className="terminal-input"
+                  placeholder="e.g. Pan American Airways"
+                  value={newAirline.airline_name}
+                  onChange={(e) =>
+                    setNewAirline({ ...newAirline, airline_name: e.target.value })
+                  }
+                />
+              </div>
+
+              <div className="terminal-input-group">
+                <label className="terminal-label">IATA 2/3 LETTER CODE</label>
+                <input
+                  type="text"
+                  required
+                  maxLength="4"
+                  className="terminal-input"
+                  placeholder="e.g. PA"
+                  value={newAirline.airline_code}
+                  onChange={(e) =>
+                    setNewAirline({
+                      ...newAirline,
+                      airline_code: e.target.value.toUpperCase(),
+                    })
+                  }
+                />
+              </div>
+
+              <div className="confirm-btn-actions">
+                <button type="submit" className="confirm-booking-btn">
+                  AUTHORIZE AIRLINE
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowAddAirline(false)}
+                  className="cancel-modal-btn"
+                >
+                  CANCEL
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* TICKET VIEW MODAL */}
       {showTicketModal && selectedBookingId && (
-        <div className="modal-overlay">
-          <div className="ticket-modal-content">
-            <button onClick={closeTicketModal} className="ticket-modal-close">
+        <div className="modal-backdrop">
+          <div className="ticket-modal-chassis">
+            <button
+              onClick={() => {
+                setShowTicketModal(false);
+                setSelectedBookingId(null);
+              }}
+              className="ticket-modal-close-x"
+            >
               ✕
             </button>
             <BookingTicket bookingId={selectedBookingId} API_BASE={API_BASE} />
-            <div className="ticket-modal-actions">
-              <button onClick={() => window.print()} className="print-button">
-                🖨️ Print Ticket
+            <div className="ticket-modal-footer-actions">
+              <button onClick={() => window.print()} className="ticket-print-action-btn">
+                🖨️ PRINT BOARDING PASS
               </button>
-              <button onClick={closeTicketModal} className="close-button">
-                Close
+              <button
+                onClick={() => {
+                  setShowTicketModal(false);
+                  setSelectedBookingId(null);
+                }}
+                className="ticket-dismiss-btn"
+              >
+                DISMISS
               </button>
             </div>
           </div>
         </div>
       )}
+
+      <footer className="aero-bottom-hazard-bar">
+        <div className="hazard-tape"></div>
+        <div className="hazard-bar-status">
+          <span className="status-item">
+            <span className="beacon-led pulse-green"></span> ATC_STATUS: CHIEF OPERATIONAL
+          </span>
+          <span className="status-item">STITCH FLIGHT DISPATCH MATRIX</span>
+        </div>
+      </footer>
     </div>
   );
 };

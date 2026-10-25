@@ -1,2847 +1,1922 @@
-/* ===== FLIGHT BOOKING SYSTEM STYLES ===== */
-
-
-/* Global Animations */
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-@keyframes pulse {
-    0%,
-    100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.7;
-    }
-}
-
-@keyframes float {
-    0%,
-    100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-@keyframes shimmer {
-    0% {
-        background-position: -200px 0;
-    }
-    100% {
-        background-position: calc(200px + 100%) 0;
-    }
-}
-
-
-/* App Container */
-
-.app {
-    min-height: 100vh;
-    background: var(--color-light);
-    animation: fadeIn var(--duration-slow) var(--ease-out);
-}
-
-
-/* ===== AUTHENTICATION STYLES ===== */
-
-
-/* Login/Register Container */
-
-.login-container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: var(--spacing-lg);
-    position: relative;
-    overflow: hidden;
-}
-
-.login-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--gradient-mesh);
-    opacity: 0.8;
-    animation: mesh-movement 15s ease-in-out infinite;
-}
-
-@keyframes mesh-movement {
-    0%,
-    100% {
-        transform: translate(0, 0) scale(1);
-    }
-    33% {
-        transform: translate(30px, -50px) scale(1.1);
-    }
-    66% {
-        transform: translate(-20px, 20px) scale(0.9);
-    }
-}
-
-.login-decorations {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.decoration-circle {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-}
-
-.circle-1 {
-    width: 300px;
-    height: 300px;
-    top: -100px;
-    right: -100px;
-    animation: float-circle 20s ease-in-out infinite;
-}
-
-.circle-2 {
-    width: 200px;
-    height: 200px;
-    bottom: -50px;
-    left: -50px;
-    animation: float-circle 15s ease-in-out infinite reverse;
-}
-
-.circle-3 {
-    width: 150px;
-    height: 150px;
-    top: 50%;
-    right: 10%;
-    animation: float-circle 25s ease-in-out infinite;
-}
-
-@keyframes float-circle {
-    0%,
-    100% {
-        transform: translate(0, 0) scale(1);
-    }
-    33% {
-        transform: translate(20px, -20px) scale(1.1);
-    }
-    66% {
-        transform: translate(-20px, 20px) scale(0.9);
-    }
-}
-
-
-/* Login Card */
-
-.login-card {
-    background: var(--gradient-glass);
-    backdrop-filter: blur(20px);
-    padding: var(--spacing-3xl);
-    border-radius: var(--radius-3xl);
-    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    max-width: 480px;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    position: relative;
-    z-index: 1;
-    animation: scaleIn var(--duration-slow) var(--ease-bounce);
-    transition: all var(--duration-normal) var(--ease-in-out);
-}
-
-.login-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.4);
-}
-
-.register-card {
-    max-width: 550px;
-}
-
-.login-header {
-    text-align: center;
-    margin-bottom: var(--spacing-3xl);
-    animation: slideInRight var(--duration-slow) var(--ease-out);
-}
-
-.logo-wrapper {
-    display: inline-block;
-    margin-bottom: var(--spacing-lg);
-    position: relative;
-}
-
-.logo-icon {
-    font-size: 4rem;
-    animation: plane-fly 3s ease-in-out infinite;
-    display: inline-block;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-}
-
-@keyframes plane-fly {
-    0%,
-    100% {
-        transform: translateX(0) rotate(0deg);
-    }
-    25% {
-        transform: translateX(10px) rotate(5deg);
-    }
-    75% {
-        transform: translateX(-10px) rotate(-5deg);
-    }
-}
-
-.login-header h2 {
-    color: var(--color-dark);
-    font-size: var(--text-4xl);
-    font-weight: 900;
-    margin-bottom: var(--spacing-md);
-    font-family: 'Poppins', sans-serif;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    position: relative;
-    letter-spacing: -0.5px;
-}
-
-.login-header p {
-    color: var(--color-gray);
-    font-size: var(--text-lg);
-    font-weight: 500;
-    line-height: 1.6;
-}
-
-
-/* Form Styles */
-
-.login-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xl);
-    animation: slideInLeft var(--duration-slow) var(--ease-out) 0.2s both;
-}
-
-.form-row {
-    display: flex;
-    gap: var(--spacing-lg);
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    position: relative;
-}
-
-.form-group label {
-    margin-bottom: var(--spacing-sm);
-    font-weight: 600;
-    color: var(--color-dark);
-    font-size: var(--text-sm);
-    font-family: 'Poppins', sans-serif;
-    transition: color var(--duration-fast) var(--ease-out);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 0.75rem;
-}
-
-.input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.input-icon {
-    position: absolute;
-    left: var(--spacing-lg);
-    font-size: 1.2rem;
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.6;
-    transition: all var(--duration-normal) var(--ease-out);
-}
-
-.form-input {
-    padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-lg) calc(var(--spacing-xl) * 2.5);
-    border: 2px solid var(--color-gray-lighter);
-    border-radius: var(--radius-xl);
-    font-size: var(--text-base);
-    transition: all var(--duration-normal) var(--ease-in-out);
-    width: 100%;
-    background: var(--color-white);
-    font-family: 'Inter', sans-serif;
-    position: relative;
-    font-weight: 500;
-}
-
-.form-input::placeholder {
-    color: var(--color-gray-light);
-    font-weight: 400;
-}
-
-.form-input:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15), var(--shadow-md);
-    transform: translateY(-2px);
-    background: var(--color-white);
-}
-
-.form-input:focus+.input-icon,
-.input-wrapper:focus-within .input-icon {
-    opacity: 1;
-    color: var(--color-primary);
-    transform: scale(1.1);
-}
-
-.form-input:hover:not(:focus) {
-    border-color: var(--color-primary-light);
-    box-shadow: var(--shadow-sm);
-    transform: translateY(-1px);
-}
-
-
-/* Enhanced input focus states */
-
-.form-group:focus-within label {
-    color: var(--color-primary);
-}
-
-
-/* Password Input Wrapper */
-
-.password-wrapper {
-    position: relative;
-}
-
-.password-input {
-    padding-right: calc(var(--spacing-xl) * 3);
-}
-
-.password-toggle {
-    position: absolute;
-    right: var(--spacing-lg);
-    top: 50%;
-    transform: translateY(-50%);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 1.3rem;
-    padding: var(--spacing-sm);
-    border-radius: var(--radius-md);
-    transition: all var(--duration-fast) var(--ease-out);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.6;
-    z-index: 2;
-}
-
-.password-toggle:hover {
-    opacity: 1;
-    background: rgba(102, 126, 234, 0.1);
-    transform: translateY(-50%) scale(1.1);
-}
-
-.password-toggle:active {
-    transform: translateY(-50%) scale(0.95);
-}
-
-
-/* Submit Button */
-
-.submit-button {
-    background: var(--gradient-primary);
-    color: var(--color-white);
-    padding: var(--spacing-xl) var(--spacing-2xl);
-    border: none;
-    border-radius: var(--radius-xl);
-    font-size: var(--text-lg);
-    font-weight: 700;
-    cursor: pointer;
-    transition: all var(--duration-normal) var(--ease-in-out);
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-    font-family: 'Poppins', sans-serif;
-    position: relative;
-    overflow: hidden;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-}
-
-.submit-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left var(--duration-slow);
-}
-
-.submit-button:hover:not(:disabled) {
-    background: linear-gradient(135deg, #5a7dd9 0%, #003366 100%);
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
-}
-
-.submit-button:hover:not(:disabled)::before {
-    left: 100%;
-}
-
-.submit-button:active {
-    transform: translateY(-1px);
-}
-
-.submit-button:disabled {
-    background: var(--color-gray-lighter);
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: var(--shadow-sm);
-}
-
-.button-arrow {
-    display: inline-block;
-    transition: transform var(--duration-normal) var(--ease-out);
-    font-size: 1.2rem;
-}
-
-.submit-button:hover .button-arrow {
-    transform: translateX(5px);
-}
-
-.button-spinner {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: #ffffff;
-    animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-
-/* Footer and Links */
-
-.login-footer {
-    text-align: center;
-    margin-top: var(--spacing-xl);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-.login-footer p {
-    margin: 0;
-    color: var(--color-gray);
-    font-size: var(--text-sm);
-}
-
-.link {
-    color: var(--color-primary);
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    position: relative;
-    display: inline-block;
-    font-size: var(--text-base);
-}
-
-.link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--gradient-primary);
-    transition: width 0.3s ease;
-}
-
-.link:hover {
-    color: var(--color-primary-dark);
-}
-
-.link:hover::after {
-    width: 100%;
-}
-
-
-/* Error Message */
-
-.error-message {
-    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-    color: var(--color-error);
-    padding: var(--spacing-lg);
-    border-radius: var(--radius-lg);
-    border: 2px solid var(--color-error-light);
-    text-align: center;
-    font-weight: 600;
-    box-shadow: var(--shadow-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-    animation: shake 0.5s ease-in-out;
-}
-
-.error-icon {
-    font-size: 1.2rem;
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes shake {
-    0%,
-    100% {
-        transform: translateX(0);
-    }
-    10%,
-    30%,
-    50%,
-    70%,
-    90% {
-        transform: translateX(-5px);
-    }
-    20%,
-    40%,
-    60%,
-    80% {
-        transform: translateX(5px);
-    }
-}
-
-
-/* ===== DASHBOARD STYLES ===== */
-
-.dashboard {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: var(--color-light);
-}
-
-
-/* Header */
-
-.dashboard-header {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    padding: 0 var(--spacing-xl);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    border-bottom: 1px solid rgba(102, 126, 234, 0.1);
-    backdrop-filter: blur(10px);
-}
-
-.header-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--spacing-lg) 0;
-}
-
-.header-content h1 {
-    color: transparent;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-size: 2rem;
-    font-weight: 800;
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    text-shadow: none;
-    position: relative;
-}
-
-.header-content h1::before {
-    content: '✈️';
-    font-size: 2rem;
-    padding: var(--spacing-md);
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
-    border-radius: var(--radius-xl);
-    border: 2px solid rgba(102, 126, 234, 0.2);
-    animation: float-header 3s ease-in-out infinite;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
-}
-
-@keyframes float-header {
-    0%,
-    100% {
-        transform: translateY(0px) rotate(0deg);
-    }
-    50% {
-        transform: translateY(-4px) rotate(8deg);
-    }
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-lg);
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
-    padding: var(--spacing-lg) var(--spacing-xl);
-    border-radius: var(--radius-xl);
-    border: 2px solid rgba(102, 126, 234, 0.15);
-    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.1);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.user-info:hover {
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
-    transform: translateY(-2px);
-    border-color: rgba(102, 126, 234, 0.3);
-}
-
-.user-info span {
-    color: var(--color-dark);
-    font-weight: 700;
-    font-size: 1rem;
-    position: relative;
-    font-family: 'Poppins', sans-serif;
-}
-
-.user-info span::before {
-    content: '👤';
-    margin-right: var(--spacing-sm);
-    font-size: 1.2rem;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-}
-
-.logout-button {
-    background: var(--gradient-secondary);
-    color: var(--color-white);
-    padding: var(--spacing-md) var(--spacing-xl);
-    border: none;
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    font-weight: 700;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
-    font-family: 'Poppins', sans-serif;
-    position: relative;
-    overflow: hidden;
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.logout-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-    transition: left 0.5s;
-}
-
-.logout-button:hover {
-    background: linear-gradient(135deg, #e5511a 0%, #cc4615 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
-}
-
-.logout-button:hover::before {
-    left: 100%;
-}
-
-
-/* Navigation */
-
-.dashboard-nav {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
-    border-bottom: 1px solid rgba(102, 126, 234, 0.1);
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-    position: relative;
-    backdrop-filter: blur(10px);
-}
-
-.dashboard-nav::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--gradient-primary);
-    opacity: 0.15;
-}
-
-.nav-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    gap: var(--spacing-2xl);
-    padding: 0 var(--spacing-xl);
-}
-
-.nav-button {
-    background: none;
-    border: none;
-    padding: var(--spacing-xl) var(--spacing-lg);
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--color-gray);
-    cursor: pointer;
-    border-bottom: 3px solid transparent;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 0.9rem;
-}
-
-.nav-button::before {
-    font-size: 1.3rem;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-}
-
-.nav-button:first-child::before {
-    content: '✈️';
-}
-
-.nav-button:last-child::before {
-    content: '📋';
-}
-
-.nav-button:hover {
-    color: var(--color-primary);
-    transform: translateY(-2px);
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
-}
-
-.nav-button:hover::before {
-    transform: scale(1.15) rotate(8deg);
-}
-
-.nav-button.active {
-    color: var(--color-primary);
-    border-bottom-color: var(--color-primary);
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.12) 0%, rgba(118, 75, 162, 0.12) 100%);
-    box-shadow: 0 -3px 15px rgba(102, 126, 234, 0.15);
-}
-
-.nav-button.active::before {
-    transform: scale(1.15);
-    filter: drop-shadow(0 3px 6px rgba(102, 126, 234, 0.3));
-}
-
-
-/* Main Content */
-
-.dashboard-main {
-    flex: 1;
-    padding: var(--spacing-2xl) var(--spacing-xl);
-    max-width: 1400px;
-    margin: 0 auto;
-    width: 100%;
-}
-
-.tab-content {
-    animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-
-/* Cards */
-
-.card {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%);
-    padding: var(--spacing-2xl);
-    border-radius: var(--radius-2xl);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border: 2px solid rgba(102, 126, 234, 0.12);
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-}
-
-.card:hover {
-    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.15);
-    border-color: rgba(102, 126, 234, 0.2);
-}
-
-.card h2 {
-    color: transparent;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: var(--spacing-xl);
-    font-size: 1.75rem;
-    font-weight: 800;
-    font-family: 'Poppins', sans-serif;
-    letter-spacing: -0.5px;
-}
-
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--spacing-xl);
-    flex-wrap: wrap;
-    gap: var(--spacing-lg);
-}
-
-.add-button {
-    background: var(--gradient-primary);
-    color: var(--color-white);
-    padding: var(--spacing-md) var(--spacing-xl);
-    border: none;
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    font-weight: 700;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    font-family: 'Poppins', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 0.9rem;
-    position: relative;
-    overflow: hidden;
-}
-
-.add-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-    transition: left 0.5s;
-}
-
-.add-button:hover {
-    background: linear-gradient(135deg, #5a7dd9 0%, #003366 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-}
-
-.add-button:hover::before {
-    left: 100%;
-}
-
-
-/* ===== SEARCH FORM ===== */
-
-.search-form {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-2xl);
-    background: var(--gradient-card);
-    padding: var(--spacing-xl);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-md);
-    border: 1px solid rgba(0, 102, 204, 0.1);
-}
-
-.search-button {
-    background: var(--gradient-primary);
-    color: var(--color-white);
-    padding: var(--spacing-md) var(--spacing-xl);
-    border: none;
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    font-weight: 600;
-    width: 100%;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-md);
-    font-family: 'Poppins', sans-serif;
-    grid-column: 1 / -1;
-    max-width: 200px;
-    justify-self: center;
-}
-
-.search-button:hover:not(:disabled) {
-    background: var(--color-primary-dark);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-.search-button:disabled {
-    background: var(--color-gray-lighter);
-    cursor: not-allowed;
-    transform: none;
-}
-
-
-/* ===== FLIGHT & BOOKING CARDS ===== */
-
-.flights-list,
-.bookings-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
-}
-
-.flight-card,
-.booking-card {
-    background: linear-gradient(145deg, #ffffff 0%, #fafbfc 100%);
-    border: 2px solid rgba(102, 126, 234, 0.12);
-    border-radius: var(--radius-2xl);
-    padding: var(--spacing-2xl);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-    position: relative;
-    overflow: hidden;
-}
-
-.flight-card::before,
-.booking-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 5px;
-    height: 100%;
-    background: var(--gradient-primary);
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.flight-card:hover,
-.booking-card:hover {
-    box-shadow: 0 8px 35px rgba(102, 126, 234, 0.25);
-    transform: translateY(-6px);
-    border-color: rgba(102, 126, 234, 0.3);
-}
-
-.flight-card:hover::before,
-.booking-card:hover::before {
-    transform: scaleY(1);
-}
-
-
-/* Enhanced Admin Flight Cards */
-
-.admin-flight-card {
-    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 50%, #edf2f7 100%);
-    border: 2px solid rgba(0, 102, 204, 0.15);
-    padding: var(--spacing-2xl);
-    position: relative;
-}
-
-.admin-flight-card::after {
-    content: '⚙️';
-    position: absolute;
-    top: var(--spacing-md);
-    right: var(--spacing-md);
-    font-size: 1.2rem;
-    opacity: 0.3;
-    transition: opacity 0.3s ease;
-}
-
-.admin-flight-card:hover::after {
-    opacity: 0.6;
-}
-
-.flight-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--spacing-md);
-}
-
-.flight-header h3 {
-    margin: 0;
-    color: var(--color-primary);
-    font-size: 1.3rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-.flight-header h3::before {
-    content: '✈️';
-    font-size: 1.1rem;
-}
-
-.flight-id {
-    background: linear-gradient(135deg, var(--color-gray-lighter), var(--color-gray-light));
-    color: var(--color-white);
-    padding: var(--spacing-xs) var(--spacing-md);
-    border-radius: var(--radius-md);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-}
-
-.flight-details {
-    display: grid;
+/* ==========================================================================
+   AERODECK FLIGHT CONSOLE - APPLICATION STYLES (App.css)
+   Pixel-faithful implementation of Stitch Screens 1, 2, 3 & 4
+   ========================================================================== */
+
+.aero-terminal-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* ==========================================================================
+   TERMINAL BAR (Top & Bottom Hazard Bars + Telemetry)
+   ========================================================================== */
+.aero-terminal-bar {
+  width: 100%;
+  background: #111319;
+  border-bottom: 2px solid #232836;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.terminal-bar-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+.terminal-bar-left, .terminal-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.sys-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 4px 10px;
+  border-radius: 4px;
+  color: #34d399;
+}
+.sys-status-badge strong {
+  color: #10b981;
+  letter-spacing: 1px;
+}
+
+.telemetry-item {
+  color: #94a3b8;
+}
+.telemetry-label {
+  margin-right: 4px;
+  color: #64748b;
+}
+.telemetry-val {
+  color: var(--neon-cyan);
+  font-weight: 700;
+}
+
+.terminal-bar-center {
+  display: flex;
+  align-items: center;
+}
+.flight-logo-marquee {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 2px;
+  color: #e2e8f0;
+}
+.flight-ico {
+  color: var(--neon-amber);
+}
+
+.telemetry-clock {
+  color: #cbd5e1;
+  background: #090a0d;
+  padding: 4px 10px;
+  border-radius: 3px;
+  border: 1px solid #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.audio-toggle-btn {
+  background: #1e2433;
+  color: #cbd5e1;
+  border: 1px solid #334155;
+  padding: 5px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.audio-toggle-btn:hover {
+  background: #28334a;
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+}
+.audio-toggle-btn.active {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 6px var(--neon-cyan-glow);
+}
+
+.terminal-logout-btn {
+  background: #2a1515;
+  color: #f87171;
+  border: 1px solid #ef4444;
+  padding: 5px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.terminal-logout-btn:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* Bottom Hazard Bar */
+.aero-bottom-hazard-bar {
+  margin-top: auto;
+  width: 100%;
+  background: #0d0f14;
+  border-top: 1px solid #1f2533;
+}
+.hazard-bar-status {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 8px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #64748b;
+}
+.hazard-bar-status .status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   SCREEN 1: LANDING & AUTHORIZATION GRID
+   ========================================================================== */
+.landing-auth-grid {
+  max-width: 1380px;
+  margin: 40px auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 320px 1fr 340px;
+  gap: 28px;
+  align-items: stretch;
+  width: 100%;
+}
+
+/* Generic Terminal Panel Chassis */
+.terminal-panel {
+  background: var(--chassis-metal);
+  border: 2px solid var(--chassis-border);
+  border-radius: 8px;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 12px 36px rgba(0, 0, 0, 0.6);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header {
+  background: linear-gradient(180deg, #242a3a 0%, #1a1e2a 100%);
+  padding: 12px 18px;
+  border-bottom: 2px solid var(--chassis-border);
+  border-radius: 6px 6px 0 0;
+  position: relative;
+}
+.panel-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 1.5px;
+  color: #f1f5f9;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.panel-body {
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* CARD 1: ACCESS CARD BADGE */
+.access-card-badge {
+  background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%);
+  border: 2px solid #3b82f6;
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: 
+    inset 0 1px 2px rgba(255, 255, 255, 0.3),
+    0 8px 24px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(59, 130, 246, 0.2);
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.access-card-badge::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 45%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 55%
+  );
+  pointer-events: none;
+}
+
+.badge-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.badge-chip {
+  width: 32px;
+  height: 24px;
+  background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+  border-radius: 4px;
+  border: 1px solid #78350f;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+.badge-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  color: #93c5fd;
+}
+.badge-holo {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  background: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6);
+  color: #ffffff;
+  border-radius: 3px;
+  font-weight: 700;
+}
+
+.badge-user-preview {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.badge-avatar {
+  width: 54px;
+  height: 54px;
+  background: #0f172a;
+  border: 2px solid #60a5fa;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: var(--neon-cyan);
+}
+.badge-meta {
+  font-family: var(--font-mono);
+}
+.badge-meta-label {
+  font-size: 0.7rem;
+  color: #93c5fd;
+}
+.badge-meta-val {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+.badge-meta-sub {
+  font-size: 0.7rem;
+  color: #bfdbfe;
+  margin-top: 2px;
+}
+
+.badge-magnetic-stripe {
+  background: #090d16;
+  padding: 6px 10px;
+  border-radius: 3px;
+  text-align: center;
+}
+.stripe-code {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #38bdf8;
+  letter-spacing: 2px;
+}
+
+.panel-quick-actions {
+  margin-top: auto;
+  background: #11141c;
+  padding: 14px;
+  border-radius: 6px;
+  border: 1px solid #283042;
+}
+.quick-title {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: #34d399;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.access-instruction {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+/* CARD 2: CENTER RETRO TERMINAL WINDOW */
+.card-terminal-window {
+  background: #151821;
+  border: 2px solid #333c52;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.window-header-bar {
+  background: linear-gradient(180deg, #2b354b 0%, #1f2738 100%);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #141a26;
+}
+.window-title-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.plane-icon {
+  color: var(--neon-amber);
+  font-size: 1.2rem;
+}
+.window-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 1.5px;
+  color: #f8fafc;
+}
+
+.window-controls {
+  display: flex;
+  gap: 6px;
+}
+.ctrl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background: #1e2638;
+  border: 1px solid #3e4c6d;
+  color: #94a3b8;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  border-radius: 3px;
+  cursor: pointer;
+  user-select: none;
+}
+.ctrl-close:hover {
+  background: #ef4444;
+  color: #ffffff;
+  border-color: #ef4444;
+}
+
+.window-screen-body {
+  padding: 28px 32px;
+  background: #0f1219;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.crt-terminal-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.welcome-text {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  letter-spacing: 2px;
+  color: #f59e0b;
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+}
+.access-text {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  color: #38bdf8;
+  letter-spacing: 2px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+.retro-plane-radar {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #475569;
+}
+.radar-plane {
+  color: var(--neon-cyan);
+  font-size: 1.1rem;
+}
+.radar-track {
+  letter-spacing: 2px;
+  color: #334155;
+}
+
+/* Alert Box */
+.terminal-alert-box {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid #ef4444;
+  color: #fca5a5;
+  padding: 10px 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  margin-bottom: 18px;
+}
+
+/* Terminal Form */
+.retro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.terminal-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.terminal-label {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  color: #94a3b8;
+  font-weight: 700;
+}
+.terminal-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.terminal-input {
+  width: 100%;
+  background: #090a0f;
+  border: 2px solid #283247;
+  color: #f8fafc;
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  padding: 12px 14px;
+  border-radius: 4px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+.terminal-input:focus {
+  border-color: var(--neon-amber);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.retro-eye-toggle {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.retro-eye-toggle:hover {
+  color: #f8fafc;
+}
+
+.terminal-button-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.retro-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 20px;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.btn-signin {
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  border: 2px solid #475569;
+  color: #ffffff;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.4);
+}
+.btn-signin:hover {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 14px var(--neon-cyan-glow);
+}
+
+/* INSERT COIN BUTTON (Arcade Orange Style from Screen 1) */
+.btn-arcade-insert {
+  background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+  border: 2px solid #ffaa00;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 4px 14px var(--neon-orange-glow);
+}
+.btn-arcade-insert:hover {
+  background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+  box-shadow: 0 0 20px var(--neon-orange-glow);
+  transform: translateY(-1px);
+}
+
+.terminal-sub-help {
+  margin-top: 18px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.terminal-inline-link {
+  color: var(--neon-amber);
+  text-decoration: none;
+  font-weight: 700;
+}
+.terminal-inline-link:hover {
+  text-decoration: underline;
+}
+
+/* CARD 3: RIGHT ROUTE INPUT PANEL */
+.card-route-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.route-controls-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.route-nav-btn {
+  width: 32px;
+  height: 32px;
+  background: #1e2638;
+  border: 1px solid #3b4866;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.route-nav-btn:hover {
+  border-color: var(--neon-amber);
+  color: var(--neon-amber);
+}
+.passenger-badge {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  background: #0f131a;
+  border: 1px solid #2e384e;
+  border-radius: 3px;
+  color: #38bdf8;
+  letter-spacing: 0.5px;
+}
+
+.split-flap-route-card {
+  background: #0b0d12;
+  border: 2px solid #262e42;
+  border-radius: 6px;
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+.route-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.route-row-label {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #94a3b8;
+}
+.route-divider-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #475569;
+}
+.route-plane-vector {
+  color: var(--neon-amber);
+  font-size: 1.2rem;
+}
+.route-dash {
+  color: #334155;
+  letter-spacing: 2px;
+}
+
+.panel-status-footer {
+  margin-top: auto;
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: #64748b;
+}
+.footer-status-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #34d399;
+}
+.route-counter {
+  color: var(--neon-cyan);
+}
+
+/* ==========================================================================
+   COCKPIT SUB-HEADER (Breadcrumbs + Pills + Clearance Tag)
+   ========================================================================== */
+.cockpit-sub-header {
+  max-width: 1440px;
+  margin: 18px auto 0;
+  padding: 0 24px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.breadcrumb-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  letter-spacing: 1.5px;
+}
+.bc-main {
+  color: #38bdf8;
+}
+.bc-slash {
+  color: #475569;
+}
+.bc-sub {
+  color: #fbbf24;
+}
+
+.cockpit-nav-pills {
+  display: flex;
+  gap: 12px;
+}
+.cockpit-pill-btn {
+  background: #141822;
+  border: 2px solid #2d374e;
+  color: #94a3b8;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 1px;
+  padding: 8px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.cockpit-pill-btn:hover {
+  border-color: #60a5fa;
+  color: #ffffff;
+}
+.cockpit-pill-btn.active-glow {
+  background: #1e3a8a;
+  border-color: #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 0 16px var(--neon-cyan-glow);
+}
+
+.user-clearance-tag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #151924;
+  border: 1px solid #2d374d;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+.tag-name {
+  color: #f8fafc;
+  font-weight: 700;
+}
+.tag-level {
+  color: #38bdf8;
+}
+.admin-clearance .tag-level {
+  color: var(--neon-amber);
+}
+
+/* Cockpit Main Content Container */
+.cockpit-main-content {
+  max-width: 1440px;
+  margin: 20px auto 40px;
+  padding: 0 24px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   SCREEN 2: MECHANICAL CONTROL STRIP & SPLIT-FLAP DEPARTURE BOARD
+   ========================================================================== */
+.industrial-control-deck {
+  background: #141720;
+  border: 2px solid #262e3f;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.control-deck-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 160px;
+}
+.control-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #94a3b8;
+}
+
+.cockpit-select, .cockpit-input-date {
+  width: 100%;
+  background: #090a0f;
+  border: 1px solid #333f57;
+  color: #f8fafc;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  padding: 10px 12px;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+.cockpit-select:focus, .cockpit-input-date:focus {
+  border-color: var(--neon-amber);
+}
+
+/* Cabin Class Toggle Group: [EN] [BP] [1ST] */
+.class-toggle-group {
+  display: flex;
+  gap: 6px;
+}
+.class-btn {
+  flex: 1;
+  background: #1e2434;
+  border: 1px solid #394765;
+  color: #cbd5e1;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 1px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.class-btn:hover {
+  border-color: #60a5fa;
+  color: #ffffff;
+}
+.class-btn.active {
+  background: var(--neon-amber);
+  border-color: #fbbf24;
+  color: #0b0c10;
+  font-weight: 800;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+}
+
+.action-group {
+  flex: 0 0 auto;
+}
+.cockpit-search-btn {
+  background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
+  border: 2px solid #fde68a;
+  color: #0f172a;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 1.5px;
+  padding: 9px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.cockpit-search-btn:hover {
+  background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+  box-shadow: 0 0 18px rgba(245, 158, 11, 0.6);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   DEPARTURE BOARD FRAME (Screen 2 Solari Split Flap Board)
+   ========================================================================== */
+.departure-board-frame {
+  background: #11141c;
+  border: 4px solid #232b3c;
+  border-radius: 10px;
+  padding: 24px;
+  position: relative;
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 0.08),
+    0 16px 48px rgba(0, 0, 0, 0.7);
+}
+
+.board-header-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #232a3b;
+}
+
+.board-title-group {
+  display: flex;
+  flex-direction: column;
+}
+.board-main-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  letter-spacing: 3px;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+.board-model-sub {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--neon-cyan);
+  letter-spacing: 1.5px;
+}
+
+.board-badges-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+/* Table Header for Departure Board */
+.split-board-table-header {
+  display: grid;
+  grid-template-columns: 140px 1.6fr 130px 140px 120px 140px 140px;
+  gap: 16px;
+  padding: 10px 16px;
+  background: #181d28;
+  border: 1px solid #2a3449;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #94a3b8;
+  margin-bottom: 12px;
+}
+
+.departure-rows-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.departure-flight-row {
+  display: grid;
+  grid-template-columns: 140px 1.6fr 130px 140px 120px 140px 140px;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 16px;
+  background: #090a0f;
+  border: 1px solid #1f2738;
+  border-radius: 6px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+}
+.departure-flight-row:hover {
+  background: #121622;
+  border-color: #3b82f6;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.row-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.airline-mini-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #64748b;
+  margin-bottom: 2px;
+}
+
+.flap-route-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.flap-route-plane {
+  color: var(--neon-amber);
+  font-size: 1.1rem;
+}
+.full-route-names {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.time-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.time-val {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  color: #f8fafc;
+  font-weight: 700;
+}
+.daily-tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 2px 4px;
+  background: #14532d;
+  color: #86efac;
+  border-radius: 2px;
+}
+
+.seats-count {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+.class-spec {
+  font-size: 0.7rem;
+  color: #64748b;
+}
+
+.price-tag {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: #fbbf24;
+  letter-spacing: 1px;
+}
+
+/* Status Pills with Neon Glows */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  width: fit-content;
+}
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-green {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid var(--neon-green);
+  color: #34d399;
+  box-shadow: 0 0 10px var(--neon-green-glow);
+}
+.status-green .status-dot {
+  background: var(--neon-green);
+}
+
+.status-amber {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid var(--neon-amber);
+  color: #fbbf24;
+  box-shadow: 0 0 10px var(--neon-amber-glow);
+}
+.status-amber .status-dot {
+  background: var(--neon-amber);
+}
+
+.status-yellow {
+  background: rgba(234, 179, 8, 0.15);
+  border: 1px solid #eab308;
+  color: #fde047;
+  box-shadow: 0 0 10px rgba(234, 179, 8, 0.4);
+}
+.status-yellow .status-dot {
+  background: #fde047;
+}
+
+.book-flight-btn {
+  background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+  border: 1px solid #60a5fa;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 1px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.book-flight-btn:hover {
+  background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+  box-shadow: 0 0 14px rgba(59, 130, 246, 0.5);
+  transform: translateY(-1px);
+}
+
+.empty-board-message {
+  padding: 48px;
+  text-align: center;
+  background: #090a0f;
+  border: 1px dashed #263147;
+  border-radius: 6px;
+}
+.empty-sub {
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   SCREEN 3: MY BOOKINGS (Bolted Heavy Metal Chassis Frame)
+   ========================================================================== */
+.bolted-chassis-frame {
+  background: #11141c;
+  border: 4px solid #232b3c;
+  border-radius: 10px;
+  padding: 32px;
+  position: relative;
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 0.08),
+    0 16px 48px rgba(0, 0, 0, 0.7);
+}
+
+.chassis-stickers {
+  position: absolute;
+  top: -16px;
+  right: 40px;
+  display: flex;
+  gap: 12px;
+  z-index: 10;
+}
+
+.chassis-header {
+  margin-bottom: 28px;
+  border-bottom: 2px solid #232b3c;
+  padding-bottom: 16px;
+}
+.chassis-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  letter-spacing: 3px;
+  color: #ffffff;
+}
+.chassis-sub {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: #38bdf8;
+  letter-spacing: 1px;
+}
+
+/* Screen 3 No Bookings Flap Display */
+.no-bookings-split-flap-box {
+  background: #08090d;
+  border: 3px solid #1c2230;
+  border-radius: 8px;
+  padding: 48px 24px;
+  text-align: center;
+  margin: 20px 0;
+  box-shadow: inset 0 4px 16px rgba(0, 0, 0, 0.8);
+}
+.flap-message-board {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 32px;
+}
+.message-line {
+  display: flex;
+  justify-content: center;
+}
+.standby-actions {
+  display: flex;
+  justify-content: center;
+}
+
+/* Bookings Cards Grid */
+.bookings-grid-deck {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 20px;
+}
+
+.booking-manifest-card {
+  background: #0c0e14;
+  border: 2px solid #242c3d;
+  border-radius: 6px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease;
+}
+.booking-manifest-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.25);
+}
+.booking-manifest-card.cancelled-card {
+  opacity: 0.65;
+  border-color: #7f1d1d;
+}
+
+.manifest-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pnr-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pnr-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #64748b;
+}
+.pnr-val {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--neon-amber);
+  letter-spacing: 1px;
+}
+
+.manifest-status-pill {
+  padding: 3px 8px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 3px;
+}
+.manifest-status-pill.status-confirmed {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid var(--neon-green);
+}
+.manifest-status-pill.status-cancelled {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid var(--neon-red);
+}
+.manifest-status-pill.status-pending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid var(--neon-amber);
+}
+
+.manifest-route-info {
+  background: #12151f;
+  padding: 12px;
+  border-radius: 4px;
+}
+.flight-id-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #38bdf8;
+  margin-bottom: 4px;
+}
+.route-arrow-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  color: #f8fafc;
+}
+.route-plane {
+  color: var(--neon-amber);
+  font-size: 1rem;
+}
+
+.manifest-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+.m-label {
+  color: #64748b;
+  margin-right: 4px;
+}
+.m-val {
+  color: #e2e8f0;
+  font-weight: 700;
+}
+.m-val.fare-price {
+  color: #fbbf24;
+}
+
+.manifest-actions-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+.manifest-view-ticket-btn {
+  flex: 1;
+  background: #1e3a8a;
+  border: 1px solid #3b82f6;
+  color: #ffffff;
+  padding: 8px 12px;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.manifest-view-ticket-btn:hover {
+  background: #2563eb;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+}
+
+.manifest-cancel-btn {
+  background: #231215;
+  border: 1px solid #ef4444;
+  color: #f87171;
+  padding: 8px 14px;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.manifest-cancel-btn:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   SCREEN 4: DATE SELECT, CONFIRMATION & CRT RADAR MODAL
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: modalFadeIn 0.2s ease-out;
+}
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-chassis-window {
+  background: #141722;
+  border: 3px solid #333d54;
+  border-radius: 10px;
+  max-width: 960px;
+  width: 100%;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 24px 60px rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+}
+.modal-chassis-window.small-confirm {
+  max-width: 520px;
+}
+
+.modal-close-cross {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.modal-close-cross:hover {
+  color: #ef4444;
+}
+
+.modal-body-two-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  padding: 28px;
+}
+
+.modal-left-control {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+}
+
+/* Mechanical Flip-Digit Reel Steppers (Screen 4) */
+.flip-date-reel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #090a0f;
+  border: 2px solid #232c40;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.reel-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.reel-step-btn {
+  background: #1e2638;
+  border: 1px solid #3b4967;
+  color: #cbd5e1;
+  font-size: 0.8rem;
+  width: 32px;
+  height: 24px;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.reel-step-btn:hover {
+  background: #2b3852;
+  color: var(--neon-amber);
+  border-color: var(--neon-amber);
+}
+.reel-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 700;
+}
+.reel-separator {
+  font-family: var(--font-mono);
+  font-size: 1.8rem;
+  color: #475569;
+  margin-bottom: 20px;
+}
+
+/* Passenger Stepper */
+.passengers-reel-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #0b0e14;
+  border: 1px solid #232a3c;
+  padding: 10px 16px;
+  border-radius: 4px;
+}
+.reel-group-title {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #94a3b8;
+}
+.stepper-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.stepper-btn {
+  width: 32px;
+  height: 32px;
+  background: #1e2536;
+  border: 1px solid #374462;
+  color: #ffffff;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stepper-btn:hover {
+  border-color: var(--neon-amber);
+  color: var(--neon-amber);
+}
+.stepper-val {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fbbf24;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* Confirmation Alerts Box (From Screen 4) */
+.confirmation-alerts-box {
+  background: rgba(245, 158, 11, 0.08);
+  border: 2px solid var(--neon-amber);
+  border-radius: 6px;
+  padding: 14px;
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.15);
+}
+.alert-box-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.alert-tri-icon {
+  color: var(--neon-amber);
+  font-size: 1.1rem;
+}
+.alert-box-title {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--neon-amber);
+  letter-spacing: 1px;
+}
+.alert-box-text {
+  font-size: 0.8rem;
+  color: #cbd5e1;
+  line-height: 1.4;
+}
+
+.modal-actions-bar {
+  display: flex;
+  gap: 12px;
+  margin-top: 6px;
+}
+.confirm-booking-btn {
+  flex: 1;
+  background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
+  border: 2px solid #fde68a;
+  color: #0b0c10;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 1.5px;
+  padding: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.5);
+  transition: all 0.15s ease;
+}
+.confirm-booking-btn:hover {
+  background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+  box-shadow: 0 0 24px rgba(245, 158, 11, 0.8);
+}
+
+.cancel-modal-btn {
+  background: #1a1e2a;
+  border: 1px solid #3e4a68;
+  color: #94a3b8;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  padding: 12px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.cancel-modal-btn:hover {
+  background: #252b3d;
+  color: #ffffff;
+}
+
+/* CRT Radar Screen Preview (Screen 4) */
+.modal-right-monitor {
+  display: flex;
+  flex-direction: column;
+}
+.crt-monitor-frame {
+  background: #1f2536;
+  border: 4px solid #36425c;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.8),
+    0 10px 30px rgba(0, 0, 0, 0.8);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.crt-scanline-screen {
+  background: #03140c;
+  border-radius: 8px;
+  padding: 20px;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 30px rgba(0, 255, 100, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* Curved scanlines */
+.crt-scanline-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.35),
+    rgba(0, 0, 0, 0.35) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.crt-terminal-readout {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: #00ff88;
+  text-shadow: 0 0 6px rgba(0, 255, 136, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  z-index: 3;
+}
+.crt-row {
+  display: flex;
+  justify-content: space-between;
+}
+.crt-label {
+  color: #059669;
+}
+.crt-val {
+  color: #00ff88;
+  font-weight: 700;
+}
+.crt-val.highlight {
+  color: #34d399;
+}
+.crt-separator {
+  color: #047857;
+  font-size: 0.75rem;
+  margin: 6px 0;
+  overflow: hidden;
+}
+.total-row {
+  font-size: 1.15rem;
+}
+.crt-price {
+  color: #ffe600;
+  text-shadow: 0 0 8px rgba(255, 230, 0, 0.8);
+}
+
+/* Ticket Modal Chassis */
+.ticket-modal-chassis {
+  position: relative;
+  max-width: 980px;
+  width: 100%;
+}
+.ticket-modal-close-x {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  width: 36px;
+  height: 36px;
+  background: #ef4444;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.ticket-modal-footer-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+.ticket-print-action-btn {
+  background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+  border: 2px solid #93c5fd;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 1.5px;
+  padding: 10px 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+}
+.ticket-print-action-btn:hover {
+  background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+}
+.ticket-dismiss-btn {
+  background: #1e2638;
+  border: 1px solid #3e4d70;
+  color: #cbd5e1;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  padding: 10px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Confirm Delete Modal Inner */
+.confirm-modal-inner {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.confirm-warning-desc {
+  font-size: 1rem;
+  color: #cbd5e1;
+}
+.confirm-summary-box {
+  background: #090b10;
+  border: 1px solid #283248;
+  padding: 14px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.confirm-btn-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+.confirm-cancel-execute-btn {
+  flex: 1;
+  background: #ef4444;
+  border: 1px solid #fca5a5;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.keep-booking-btn {
+  background: #1e2638;
+  border: 1px solid #3b4966;
+  color: #cbd5e1;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  padding: 10px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   ATC ADMIN DASHBOARD STYLES
+   ========================================================================== */
+.atc-stats-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.atc-stat-card {
+  background: #11141c;
+  border: 2px solid #232c40;
+  border-radius: 6px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 700;
+}
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  color: #ffffff;
+  line-height: 1;
+}
+.stat-value.green {
+  color: var(--neon-green);
+  text-shadow: 0 0 10px var(--neon-green-glow);
+}
+.stat-sub {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #38bdf8;
+}
+
+.admin-actions-pair {
+  display: flex;
+  gap: 6px;
+}
+.admin-edit-btn {
+  background: #1e3a8a;
+  border: 1px solid #3b82f6;
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 6px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.admin-del-btn {
+  background: #450a0a;
+  border: 1px solid #ef4444;
+  color: #fca5a5;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 6px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.airlines-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+.airline-card-retro {
+  background: #0c0e14;
+  border: 2px solid #242c3d;
+  border-radius: 6px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.airline-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.air-icon {
+  color: var(--neon-amber);
+  font-size: 1.4rem;
+}
+.air-code {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--neon-cyan);
+}
+.air-name {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+.air-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #34d399;
+}
+
+.retro-admin-form {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.form-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.checkbox-label-retro {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   RESPONSIVE LAYOUTS
+   ========================================================================== */
+@media (max-width: 1100px) {
+  .landing-auth-grid {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+  }
+  .split-board-table-header {
+    display: none;
+  }
+  .departure-flight-row {
     grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-md);
-    margin: var(--spacing-lg) 0;
+    gap: 12px;
+  }
+  .modal-body-two-panel {
+    grid-template-columns: 1fr;
+  }
 }
-
-.time-label {
-    display: inline-block;
-    min-width: 80px;
-    font-weight: 600;
-    color: var(--color-gray);
-}
-
-.flight-capacity {
-    margin-top: var(--spacing-lg);
-}
-
-.flight-seats {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    margin-bottom: var(--spacing-sm);
-    font-weight: 600;
-}
-
-.seats-available {
-    color: var(--color-success);
-    font-size: 1.1rem;
-    font-weight: 700;
-}
-
-.seats-divider {
-    color: var(--color-gray-light);
-    font-weight: 400;
-}
-
-.seats-total {
-    color: var(--color-gray);
-    font-size: 1.1rem;
-    font-weight: 700;
-}
-
-.seats-label {
-    color: var(--color-gray-light);
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-.capacity-bar {
-    width: 100%;
-    height: 8px;
-    background: var(--color-gray-lighter);
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-    position: relative;
-}
-
-.capacity-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--color-success) 0%, var(--color-warning) 70%, var(--color-error) 100%);
-    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: var(--radius-sm);
-}
-
-.admin-actions {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: var(--spacing-lg);
-    min-width: 200px;
-}
-
-.flight-price-section {
-    text-align: right;
-}
-
-.admin-buttons {
-    display: flex;
-    gap: var(--spacing-md);
-    flex-wrap: wrap;
-}
-
-.delete-button {
-    background: linear-gradient(135deg, var(--color-error) 0%, #dc2626 100%);
-    color: var(--color-white);
-    padding: var(--spacing-sm) var(--spacing-lg);
-    border: none;
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-md);
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    position: relative;
-    overflow: hidden;
-}
-
-.delete-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-}
-
-.delete-button:hover:not(:disabled) {
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-.delete-button:hover:not(:disabled)::before {
-    left: 100%;
-}
-
-.delete-button:active {
-    transform: translateY(0);
-}
-
-.delete-icon {
-    font-size: 1rem;
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
-}
-
-.edit-button {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: var(--color-white);
-    padding: var(--spacing-sm) var(--spacing-lg);
-    border: none;
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-md);
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    position: relative;
-    overflow: hidden;
-}
-
-.edit-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-}
-
-.edit-button:hover:not(:disabled) {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-.edit-button:hover:not(:disabled)::before {
-    left: 100%;
-}
-
-.edit-button:active {
-    transform: translateY(0);
-}
-
-.edit-icon {
-    font-size: 1rem;
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
-}
-
-.edit-flight-form {
-    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-    border: 2px solid #3b82f6;
-}
-
-.edit-flight-form h3 {
-    color: #1e40af;
-}
-
-.flight-info,
-.booking-info {
-    flex: 1;
-}
-
-.flight-info h3,
-.booking-info h3 {
-    color: var(--color-dark);
-    margin-bottom: var(--spacing-sm);
-    font-weight: 600;
-    font-family: 'Poppins', sans-serif;
-}
-
-.route {
-    color: var(--color-primary);
-    font-weight: 600;
-    margin-bottom: var(--spacing-sm);
-    font-size: 1.1rem;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-.route::after {
-    content: '→';
-    color: var(--color-secondary);
-    font-weight: bold;
-    font-size: 1.2rem;
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
-}
-
-.flight-time,
-.booking-time,
-.booking-detail {
-    color: var(--color-gray-light);
-    font-size: 0.875rem;
-    margin-bottom: var(--spacing-xs);
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-.flight-time::before {
-    content: '🕒';
-}
-
-.booking-time::before {
-    content: '�';
-}
-
-.flight-actions,
-.booking-actions {
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: var(--spacing-md);
-}
-
-.flight-price,
-.booking-amount {
-    font-size: 2rem;
-    font-weight: 900;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: var(--spacing-sm);
-    font-family: 'Poppins', sans-serif;
-    text-shadow: none;
-    position: relative;
-}
-
-.flight-price::before {
-    content: '💰';
-    position: absolute;
-    left: -2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.5rem;
-    opacity: 0.6;
-}
-
-.book-button {
-    background: var(--gradient-secondary);
-    color: var(--color-white);
-    padding: var(--spacing-md) var(--spacing-xl);
-    border: none;
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    font-weight: 700;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
-    font-family: 'Poppins', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 0.9rem;
-    position: relative;
-    overflow: hidden;
-}
-
-.book-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-    transition: left 0.5s;
-}
-
-.book-button:hover {
-    background: linear-gradient(135deg, #e5511a 0%, #cc4615 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
-}
-
-.book-button:hover::before {
-    left: 100%;
-}
-
-
-/* View Ticket Button */
-
-.view-ticket-button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: var(--color-white);
-    padding: var(--spacing-md) var(--spacing-xl);
-    border: none;
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    font-weight: 700;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    font-family: 'Poppins', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-size: 0.85rem;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-.view-ticket-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-    transition: left 0.5s;
-}
-
-.view-ticket-button:hover {
-    background: linear-gradient(135deg, #5a7dd9 0%, #6a4295 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-}
-
-.view-ticket-button:hover::before {
-    left: 100%;
-}
-
-
-/* ===== STATUS STYLES ===== */
-
-.booking-status,
-.flight-status {
-    font-weight: 600;
-    padding: var(--spacing-xs) var(--spacing-md);
-    border-radius: var(--radius-md);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-}
-
-.status-confirmed {
-    color: var(--color-success);
-    background: rgba(56, 161, 105, 0.1);
-    border: 1px solid var(--color-success-light);
-}
-
-.status-confirmed::before {
-    content: '✅';
-}
-
-.status-pending {
-    color: var(--color-warning);
-    background: rgba(237, 137, 54, 0.1);
-    border: 1px solid var(--color-warning-light);
-}
-
-.status-pending::before {
-    content: '⏳';
-}
-
-.status-cancelled {
-    color: var(--color-error);
-    background: rgba(229, 62, 62, 0.1);
-    border: 1px solid var(--color-error-light);
-}
-
-.status-cancelled::before {
-    content: '❌';
-}
-
-.status-scheduled {
-    color: var(--color-success);
-    background: rgba(56, 161, 105, 0.1);
-    border: 1px solid var(--color-success-light);
-}
-
-.status-scheduled::before {
-    content: '📅';
-}
-
-.status-delayed {
-    color: var(--color-warning);
-    background: rgba(237, 137, 54, 0.1);
-    border: 1px solid var(--color-warning-light);
-}
-
-.status-delayed::before {
-    content: '⚠️';
-}
-
-.status-completed {
-    color: var(--color-info);
-    background: rgba(49, 130, 206, 0.1);
-    border: 1px solid var(--color-info-light);
-}
-
-.status-completed::before {
-    content: '✈️';
-}
-
-.payment-status {
-    color: var(--color-gray-light);
-    font-size: 0.875rem;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-}
-
-.payment-status::before {
-    content: '💳';
-}
-
-
-/* ===== ADD FLIGHT FORM ===== */
-
-.add-flight-form {
-    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 50%, #edf2f7 100%);
-    border: 2px solid rgba(0, 102, 204, 0.15);
-    border-radius: var(--radius-xl);
-    padding: var(--spacing-2xl);
-    margin-bottom: var(--spacing-2xl);
-    box-shadow: var(--shadow-lg);
-    position: relative;
-    overflow: hidden;
-}
-
-.add-flight-form::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--gradient-primary);
-}
-
-.add-flight-form h3 {
-    margin-bottom: var(--spacing-xl);
-    color: var(--color-primary);
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.add-flight-form h3::before {
-    content: '✈️';
-    color: var(--color-secondary);
-    font-size: 1.3rem;
-    padding: var(--spacing-sm);
-    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 107, 53, 0.2));
-    border-radius: var(--radius-lg);
-    border: 2px solid rgba(255, 107, 53, 0.2);
-}
-
-.flight-form {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--spacing-xl);
-}
-
-.flight-form .form-input {
-    background: var(--color-white);
-    border: 2px solid var(--color-gray-lighter);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-lg);
-    font-size: 1rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-sm);
-    position: relative;
-}
-
-.flight-form .form-input:focus {
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.1), var(--shadow-md);
-    transform: translateY(-2px);
-}
-
-.flight-form .form-input:hover {
-    border-color: var(--color-primary-light);
-    box-shadow: var(--shadow-md);
-}
-
-.form-actions {
-    grid-column: 1 / -1;
-    display: flex;
-    gap: var(--spacing-lg);
-    justify-content: center;
-    margin-top: var(--spacing-xl);
-    padding-top: var(--spacing-xl);
-    border-top: 2px dashed var(--color-gray-lighter);
-}
-
-.submit-button {
-    background: var(--gradient-primary);
-    color: var(--color-white);
-    padding: var(--spacing-lg) var(--spacing-2xl);
-    border: none;
-    border-radius: var(--radius-lg);
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-md);
-    font-family: 'Poppins', sans-serif;
-    position: relative;
-    overflow: hidden;
-    min-width: 140px;
-}
-
-.submit-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-}
-
-.submit-button:hover:not(:disabled) {
-    background: var(--color-primary-dark);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-xl);
-}
-
-.submit-button:hover:not(:disabled)::before {
-    left: 100%;
-}
-
-.cancel-button {
-    background: linear-gradient(135deg, var(--color-gray-lighter) 0%, var(--color-gray-light) 100%);
-    color: var(--color-gray);
-    padding: var(--spacing-lg) var(--spacing-2xl);
-    border: 2px solid var(--color-gray-lighter);
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.1rem;
-    min-width: 140px;
-}
-
-.cancel-button:hover {
-    background: linear-gradient(135deg, var(--color-gray-light) 0%, var(--color-gray) 100%);
-    color: var(--color-white);
-    border-color: var(--color-gray);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
-
-
-/* ===== UTILITY CLASSES ===== */
-
-.no-results {
-    text-align: center;
-    color: var(--color-gray-light);
-    font-style: italic;
-    padding: var(--spacing-2xl);
-    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-    border-radius: var(--radius-xl);
-    border: 2px dashed var(--color-gray-lighter);
-    font-size: 1.1rem;
-    margin: var(--spacing-xl) 0;
-    position: relative;
-    overflow: hidden;
-}
-
-.no-results::before {
-    content: '✈️';
-    display: block;
-    font-size: 4rem;
-    margin-bottom: var(--spacing-lg);
-    opacity: 0.3;
-    animation: float-slow 4s ease-in-out infinite;
-}
-
-.no-results::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0, 102, 204, 0.1), transparent);
-    animation: shimmer 3s ease-in-out infinite;
-}
-
-@keyframes float-slow {
-    0%,
-    100% {
-        transform: translateY(0px) rotate(0deg);
-    }
-    50% {
-        transform: translateY(-10px) rotate(10deg);
-    }
-}
-
-@keyframes shimmer {
-    0% {
-        left: -100%;
-    }
-    100% {
-        left: 100%;
-    }
-}
-
-
-/* Loading States */
-
-.loading-spinner {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: #ffffff;
-    animation: spin 1s ease-in-out infinite;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.loading-overlay {
-    position: relative;
-}
-
-.loading-overlay::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-xl);
-    backdrop-filter: blur(2px);
-}
-
-
-/* Success/Error Messages */
-
-.success-message {
-    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-    color: var(--color-success);
-    padding: var(--spacing-lg);
-    border-radius: var(--radius-lg);
-    border: 2px solid var(--color-success-light);
-    text-align: center;
-    font-weight: 600;
-    box-shadow: var(--shadow-sm);
-    margin: var(--spacing-lg) 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-}
-
-.success-message::before {
-    content: '✅';
-    font-size: 1.2rem;
-}
-
-.error-message {
-    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-    color: var(--color-error);
-    padding: var(--spacing-lg);
-    border-radius: var(--radius-lg);
-    border: 2px solid var(--color-error-light);
-    text-align: center;
-    font-weight: 600;
-    box-shadow: var(--shadow-sm);
-    margin: var(--spacing-lg) 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-}
-
-.error-message::before {
-    content: '❌';
-    font-size: 1.2rem;
-}
-
-
-/* ===== DAILY FLIGHT STYLES ===== */
-
-
-/* Daily Flight Checkbox */
-
-.daily-flight-option {
-    grid-column: 1 / -1;
-    background: linear-gradient(135deg, #e6f7ff 0%, #bae7ff 100%);
-    border: 2px solid rgba(0, 102, 204, 0.2);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-lg);
-    margin: var(--spacing-md) 0;
-}
-
-.checkbox-label {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-sm);
-    cursor: pointer;
-    color: var(--color-primary);
-    font-weight: 600;
-}
-
-.checkbox-input {
-    margin-right: var(--spacing-md);
-    transform: scale(1.2);
-    accent-color: var(--color-primary);
-}
-
-.checkbox-text {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    font-size: 1.1rem;
-}
-
-.checkbox-text::before {
-    content: '🔄';
-    font-size: 1.2rem;
-}
-
-.checkbox-help {
-    font-size: 0.875rem;
-    color: var(--color-gray);
-    font-weight: 400;
-    font-style: italic;
-    margin-left: var(--spacing-xl);
-}
-
-
-/* Daily Flight Badge */
-
-.daily-badge {
-    background: linear-gradient(135deg, var(--color-secondary) 0%, #ff8f6b 100%);
-    color: var(--color-white);
-    padding: var(--spacing-xs) var(--spacing-md);
-    border-radius: var(--radius-md);
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: var(--shadow-sm);
-    animation: pulse-glow 2s ease-in-out infinite;
-}
-
-@keyframes pulse-glow {
-    0%,
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.8;
-        transform: scale(1.05);
-    }
-}
-
-
-/* Weekdays Selection */
-
-.weekdays-selection {
-    grid-column: 1 / -1;
-    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-    border: 2px solid rgba(102, 126, 234, 0.2);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-xl);
-    margin: var(--spacing-md) 0;
-}
-
-.weekdays-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: var(--spacing-md);
-    margin-top: var(--spacing-md);
-}
-
-.weekday-checkbox {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    cursor: pointer;
-    padding: var(--spacing-md);
-    background: white;
-    border: 2px solid rgba(102, 126, 234, 0.2);
-    border-radius: var(--radius-lg);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-}
-
-.weekday-checkbox:hover {
-    border-color: rgba(102, 126, 234, 0.5);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
-}
-
-.weekday-checkbox input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    accent-color: #667eea;
-}
-
-.weekday-checkbox input[type="checkbox"]:checked+.weekday-label {
-    color: #667eea;
-    font-weight: 700;
-}
-
-.weekday-checkbox input[type="checkbox"]:checked~* {
-    border-color: #667eea;
-}
-
-.weekday-checkbox:has(input:checked) {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.weekday-label {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    flex: 1;
-    font-weight: 600;
-    color: var(--color-gray);
-    transition: color 0.3s ease;
-}
-
-.weekday-emoji {
-    font-size: 1.2rem;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-}
-
-.weekday-name {
-    font-size: 0.9rem;
-}
-
-.weekdays-badge {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: var(--color-white);
-    padding: var(--spacing-xs) var(--spacing-md);
-    border-radius: var(--radius-md);
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: var(--shadow-sm);
-}
-
-.flight-badges {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    flex-wrap: wrap;
-}
-
-.flight-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: var(--spacing-md);
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
-}
-
-.flight-duration {
-    color: var(--color-gray-light);
-    font-size: 0.875rem;
-    margin-bottom: var(--spacing-xs);
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    font-weight: 500;
-}
-
-.flight-duration::before {
-    content: '⏱️';
-}
-
-
-/* Date Selector Modal */
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    backdrop-filter: blur(5px);
-    animation: modal-fade-in 0.3s ease-out;
-}
-
-@keyframes modal-fade-in {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-.date-selector-modal {
-    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-    border-radius: var(--radius-xl);
-    padding: var(--spacing-2xl);
-    box-shadow: var(--shadow-xl);
-    border: 2px solid rgba(0, 102, 204, 0.1);
-    width: 90%;
-    max-width: 500px;
-    position: relative;
-    animation: modal-slide-in 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes modal-slide-in {
-    from {
-        opacity: 0;
-        transform: translateY(-50px) scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.date-selector-modal h3 {
-    color: var(--color-primary);
-    margin-bottom: var(--spacing-lg);
-    text-align: center;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
-}
-
-.date-selector-modal h3::before {
-    content: '📅';
-    font-size: 1.3rem;
-}
-
-.modal-flight-info {
-    background: linear-gradient(135deg, rgba(0, 102, 204, 0.05) 0%, rgba(0, 102, 204, 0.1) 100%);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-lg);
-    margin-bottom: var(--spacing-xl);
-    border: 1px solid rgba(0, 102, 204, 0.2);
-    line-height: 1.6;
-    color: var(--color-gray);
-}
-
-.modal-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
-}
-
-.modal-form label {
-    font-weight: 600;
-    color: var(--color-primary);
-    margin-bottom: var(--spacing-sm);
-}
-
-.modal-actions {
-    display: flex;
-    gap: var(--spacing-lg);
-    justify-content: center;
-    margin-top: var(--spacing-lg);
-}
-
-.modal-actions .submit-button,
-.modal-actions .cancel-button {
-    flex: 1;
-    max-width: 150px;
-}
-
-
-/* Travel Date Display */
-
-.travel-date {
-    color: var(--color-secondary);
-    font-size: 0.875rem;
-    margin-bottom: var(--spacing-xs);
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    font-weight: 500;
-}
-
-.travel-date::before {
-    content: '🗓️';
-}
-
-
-/* Enhanced User Dashboard Flight Cards */
-
-.flight-card .flight-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--spacing-md);
-}
-
-.flight-card .flight-header h3 {
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-
-/* ===== ANIMATIONS ===== */
-
-@keyframes pulse {
-    0%,
-    100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
-}
-
-@keyframes bounce {
-    0%,
-    20%,
-    53%,
-    80%,
-    100% {
-        transform: translate3d(0, 0, 0);
-    }
-    40%,
-    43% {
-        transform: translate3d(0, -10px, 0);
-    }
-    70% {
-        transform: translate3d(0, -5px, 0);
-    }
-    90% {
-        transform: translate3d(0, -2px, 0);
-    }
-}
-
-.loading {
-    animation: pulse 2s infinite;
-}
-
-.bounce {
-    animation: bounce 1s infinite;
-}
-
-
-/* ===== RESPONSIVE DESIGN ===== */
 
 @media (max-width: 768px) {
-     :root {
-        --spacing-xs: 0.25rem;
-        --spacing-sm: 0.375rem;
-        --spacing-md: 0.75rem;
-        --spacing-lg: 1rem;
-        --spacing-xl: 1.5rem;
-        --spacing-2xl: 2rem;
-    }
-    .login-container {
-        padding: var(--spacing-md);
-    }
-    .login-card {
-        padding: var(--spacing-xl);
-        border-radius: var(--radius-xl);
-    }
-    .form-row {
-        flex-direction: column;
-        gap: var(--spacing-lg);
-    }
-    .header-content {
-        flex-direction: column;
-        gap: var(--spacing-lg);
-        text-align: center;
-        padding: var(--spacing-md) 0;
-    }
-    .header-content h1 {
-        font-size: 1.75rem;
-    }
-    .nav-content {
-        gap: var(--spacing-lg);
-        overflow-x: auto;
-        padding: 0 var(--spacing-md);
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
-    .nav-content::-webkit-scrollbar {
-        display: none;
-    }
-    .nav-button {
-        white-space: nowrap;
-        padding: var(--spacing-lg) var(--spacing-xl);
-        font-size: 0.9rem;
-    }
-    .flight-card,
-    .booking-card {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-lg);
-        padding: var(--spacing-xl);
-    }
-    .admin-flight-card {
-        padding: var(--spacing-xl);
-    }
-    .flight-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-sm);
-    }
-    .flight-details {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-sm);
-    }
-    .flight-actions,
-    .booking-actions {
-        text-align: left;
-        width: 100%;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .admin-actions {
-        width: 100%;
-        flex-direction: column;
-        align-items: stretch;
-        gap: var(--spacing-md);
-    }
-    .flight-price-section {
-        text-align: center;
-    }
-    .admin-buttons {
-        justify-content: center;
-    }
-    .search-form {
-        grid-template-columns: 1fr;
-        padding: var(--spacing-lg);
-    }
-    .card-header {
-        flex-direction: column;
-        gap: var(--spacing-lg);
-        align-items: flex-start;
-    }
-    .flight-form {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-lg);
-    }
-    .dashboard-main {
-        padding: var(--spacing-lg) var(--spacing-md);
-    }
-    .card {
-        padding: var(--spacing-xl);
-    }
-    .form-actions {
-        flex-direction: column;
-        gap: var(--spacing-md);
-    }
-    .submit-button,
-    .cancel-button {
-        width: 100%;
-        padding: var(--spacing-lg);
-    }
-    .delete-button {
-        width: 100%;
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .header-content h1 {
-        font-size: 1.5rem;
-    }
-    .header-content h1::before {
-        font-size: 1.4rem;
-    }
-    .flight-price,
-    .booking-amount {
-        font-size: 1.25rem;
-    }
-    .user-info {
-        flex-direction: column;
-        gap: var(--spacing-sm);
-        padding: var(--spacing-md);
-        text-align: center;
-    }
-    .logout-button {
-        width: 100%;
-        padding: var(--spacing-md);
-    }
-    .nav-button {
-        padding: var(--spacing-md) var(--spacing-lg);
-        font-size: 0.85rem;
-    }
-    .add-flight-form h3 {
-        font-size: 1.25rem;
-        text-align: center;
-    }
-    .flight-header h3 {
-        font-size: 1.1rem;
-    }
-    .capacity-bar {
-        height: 6px;
-    }
-    .no-results {
-        padding: var(--spacing-xl);
-        font-size: 1rem;
-    }
-    .no-results::before {
-        font-size: 3rem;
-    }
-}
-
-
-/* ===== DELETE BOOKING STYLES ===== */
-
-.delete-booking-button {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    color: var(--color-white);
-    border: none;
-    padding: var(--spacing-md) var(--spacing-lg);
-    border-radius: var(--radius-lg);
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    margin-top: var(--spacing-md);
-    box-shadow: var(--shadow-sm);
-    position: relative;
-    overflow: hidden;
-}
-
-.delete-booking-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-}
-
-.delete-booking-button:hover {
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
-
-.delete-booking-button:hover::before {
-    left: 100%;
-}
-
-.delete-booking-button:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.delete-booking-button.deleting {
-    background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
-    cursor: not-allowed;
-}
-
-.delete-icon {
-    font-size: 1rem;
-    transition: transform 0.2s;
-}
-
-.delete-booking-button:hover .delete-icon {
-    transform: scale(1.1);
-}
-
-.cancelled-info {
-    margin-top: var(--spacing-md);
-    padding: var(--spacing-sm) var(--spacing-md);
-    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-    border: 1px solid #fecaca;
-    border-radius: var(--radius-md);
-    color: #dc2626;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    font-size: 0.9rem;
-}
-
-.cancelled-icon {
-    font-size: 1rem;
-}
-
-
-/* Delete Confirmation Modal */
-
-.delete-confirm-modal {
-    background: var(--gradient-card);
-    border-radius: var(--radius-xl);
-    padding: 0;
-    max-width: 500px;
-    width: 90%;
-    box-shadow: var(--shadow-xl);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    animation: modal-slide-in 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-}
-
-.delete-confirm-modal .modal-header {
-    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-    padding: var(--spacing-xl);
-    border-bottom: 1px solid rgba(239, 68, 68, 0.2);
-}
-
-.delete-confirm-modal .modal-header h3 {
-    margin: 0;
-    color: #dc2626;
-    font-size: 1.25rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-}
-
-.warning-icon {
-    font-size: 1.5rem;
-    animation: bounce 2s ease-in-out infinite;
-}
-
-@keyframes bounce {
-    0%,
-    20%,
-    50%,
-    80%,
-    100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(-5px);
-    }
-    60% {
-        transform: translateY(-3px);
-    }
-}
-
-.delete-confirm-modal .modal-content {
-    padding: var(--spacing-xl);
-}
-
-.confirm-message {
-    font-size: 1.1rem;
-    color: var(--color-dark);
-    margin-bottom: var(--spacing-lg);
-    font-weight: 500;
-}
-
-.booking-details {
-    background: var(--color-light);
-    padding: var(--spacing-lg);
-    border-radius: var(--radius-lg);
-    margin-bottom: var(--spacing-lg);
-    border: 1px solid var(--color-gray-lighter);
-}
-
-.booking-details p {
-    margin: var(--spacing-sm) 0;
-    color: var(--color-gray);
-}
-
-.booking-details strong {
-    color: var(--color-dark);
-    font-weight: 600;
-}
-
-.refund-info {
-    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-    padding: var(--spacing-lg);
-    border-radius: var(--radius-lg);
-    border: 1px solid #bbf7d0;
-}
-
-.refund-notice {
-    margin: 0;
-    color: #166534;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-.delete-confirm-modal .modal-actions {
-    padding: var(--spacing-xl);
-    background: var(--color-light);
-    border-top: 1px solid var(--color-gray-lighter);
-    display: flex;
-    gap: var(--spacing-lg);
-    justify-content: flex-end;
-}
-
-.confirm-delete-button {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    color: var(--color-white);
-    border: none;
-    padding: var(--spacing-md) var(--spacing-xl);
-    border-radius: var(--radius-lg);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-md);
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    position: relative;
-    overflow: hidden;
-}
-
-.confirm-delete-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-}
-
-.confirm-delete-button:hover {
-    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-.confirm-delete-button:hover::before {
-    left: 100%;
-}
-
-.confirm-delete-button:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-    transform: none;
-}
-
-
-/* Cancelled Booking Styling */
-
-.booking-card.cancelled {
-    opacity: 0.8;
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    border: 2px solid #cbd5e1;
-    position: relative;
-}
-
-.booking-card.cancelled::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: repeating-linear-gradient( 45deg, transparent, transparent 10px, rgba(148, 163, 184, 0.1) 10px, rgba(148, 163, 184, 0.1) 20px);
-    pointer-events: none;
-    border-radius: var(--radius-xl);
-}
-
-.booking-card.cancelled .booking-info h3 {
-    color: #64748b;
-    text-decoration: line-through;
-}
-
-.booking-card.cancelled .booking-amount {
-    color: #64748b;
-    text-decoration: line-through;
-}
-
-
-/* Loading Bookings */
-
-.loading-bookings {
-    display: flex;
+  .hide-mobile {
+    display: none !important;
+  }
+  .cockpit-sub-header {
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: var(--spacing-4xl);
-    text-align: center;
-}
-
-.loading-bookings p {
-    margin-top: var(--spacing-lg);
-    color: var(--color-gray);
-    font-size: 1.1rem;
-    font-weight: 500;
-}
-
-.loading-spinner.large {
-    width: 40px;
-    height: 40px;
-    border-width: 4px;
-}
-
-
-/* Notification Toast */
-
-.notification-toast {
-    position: fixed;
-    top: var(--spacing-xl);
-    right: var(--spacing-xl);
-    z-index: 1000;
-    max-width: 450px;
-    min-width: 300px;
-    padding: 0;
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-xl);
-    backdrop-filter: blur(10px);
-    animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    overflow: hidden;
-}
-
-.notification-toast.success {
-    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-    border-left: 4px solid #10b981;
-}
-
-.notification-toast.error {
-    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-    border-left: 4px solid #ef4444;
-}
-
-.notification-content {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    padding: var(--spacing-lg) var(--spacing-xl);
-}
-
-.notification-icon {
-    font-size: 1.25rem;
-    flex-shrink: 0;
-}
-
-.notification-message {
-    flex: 1;
-    color: var(--color-dark);
-    font-weight: 500;
-    line-height: 1.4;
-}
-
-.notification-close {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--color-gray);
-    transition: color 0.2s;
-    padding: 0;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.notification-close:hover {
-    color: var(--color-dark);
-    background: rgba(0, 0, 0, 0.1);
-}
-
-@keyframes slideInRight {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-
-/* ===== BOOKING TICKET MODAL STYLES ===== */
-
-.ticket-modal-content {
-    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-    border-radius: var(--radius-2xl);
-    padding: var(--spacing-2xl);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    width: 90%;
-    max-width: 900px;
-    max-height: 90vh;
-    overflow-y: auto;
-    border: 2px solid rgba(102, 126, 234, 0.15);
-    position: relative;
-    animation: modal-slide-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.ticket-modal-content::-webkit-scrollbar {
-    width: 8px;
-}
-
-.ticket-modal-content::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: var(--radius-lg);
-}
-
-.ticket-modal-content::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-    border-radius: var(--radius-lg);
-}
-
-.ticket-modal-content::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #5a7dd9 0%, #6a4295 100%);
-}
-
-.ticket-modal-close {
-    position: absolute;
-    top: var(--spacing-lg);
-    right: var(--spacing-lg);
-    background: rgba(239, 68, 68, 0.15);
-    border: 2px solid rgba(239, 68, 68, 0.3);
-    color: #dc2626;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-    font-weight: bold;
-}
-
-.ticket-modal-close:hover {
-    background: rgba(239, 68, 68, 0.25);
-    border-color: rgba(239, 68, 68, 0.5);
-    transform: rotate(90deg) scale(1.1);
-}
-
-.ticket-modal-actions {
-    display: flex;
-    gap: var(--spacing-lg);
-    justify-content: center;
-    margin-top: var(--spacing-2xl);
-    padding-top: var(--spacing-xl);
-    border-top: 2px solid rgba(102, 126, 234, 0.1);
-    flex-wrap: wrap;
-}
-
-.print-button,
-.ticket-modal-content .close-button {
-    padding: var(--spacing-lg) var(--spacing-2xl);
-    border: none;
-    border-radius: var(--radius-lg);
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    font-family: 'Poppins', sans-serif;
-    position: relative;
-    overflow: hidden;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.print-button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: var(--color-white);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    min-width: 150px;
-}
-
-.print-button:hover {
-    background: linear-gradient(135deg, #5a7dd9 0%, #6a4295 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
-}
-
-.ticket-modal-content .close-button {
-    background: linear-gradient(135deg, var(--color-gray-lighter) 0%, var(--color-gray-light) 100%);
-    color: var(--color-gray);
-    box-shadow: var(--shadow-md);
-    min-width: 120px;
-    border: 2px solid var(--color-gray-lighter);
-}
-
-.ticket-modal-content .close-button:hover {
-    background: linear-gradient(135deg, var(--color-gray-light) 0%, var(--color-gray) 100%);
-    color: var(--color-white);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--color-gray);
-}
-
-.print-button::before,
-.ticket-modal-content .close-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-}
-
-.print-button:hover::before,
-.ticket-modal-content .close-button:hover::before {
-    left: 100%;
-}
-
-
-/* Print Styles */
-
-@media print {
-    .ticket-modal-close,
-    .ticket-modal-actions {
-        display: none;
-    }
-    .ticket-modal-content {
-        max-height: 100%;
-        padding: 0;
-        box-shadow: none;
-        border: none;
-        width: 100%;
-        max-width: 100%;
-        background: white;
-    }
+    align-items: flex-start;
+  }
+  .departure-flight-row {
+    grid-template-columns: 1fr;
+  }
 }

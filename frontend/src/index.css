@@ -1,327 +1,402 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+/* ==========================================================================
+   AERODECK FLIGHT CONSOLE - GLOBAL DESIGN SYSTEM
+   Inspired by Stitch Flight Booking Retro-Industrial Terminal Aesthetic
+   ========================================================================== */
+
 :root {
-    /* Enhanced Aviation-themed Color Palette */
-    --color-primary: #0066cc;
-    --color-primary-dark: #004080;
-    --color-primary-light: #3399ff;
-    --color-primary-ultra-light: #e6f3ff;
-    --color-secondary: #ff6b35;
-    --color-secondary-dark: #e5511a;
-    --color-secondary-light: #ff8f6b;
-    --color-secondary-ultra-light: #fff1ed;
-    /* Enhanced Neutral Colors */
-    --color-dark: #1a202c;
-    --color-dark-light: #2d3748;
-    --color-gray: #4a5568;
-    --color-gray-light: #718096;
-    --color-gray-lighter: #a0aec0;
-    --color-gray-ultra-light: #f7fafc;
-    --color-light: #edf2f7;
-    --color-white: #ffffff;
-    /* Enhanced Status Colors */
-    --color-success: #38a169;
-    --color-success-light: #68d391;
-    --color-success-ultra-light: #f0fff4;
-    --color-warning: #ed8936;
-    --color-warning-light: #fbb560;
-    --color-warning-ultra-light: #fffaf0;
-    --color-error: #e53e3e;
-    --color-error-light: #fc8181;
-    --color-error-ultra-light: #fed7d7;
-    --color-info: #3182ce;
-    --color-info-light: #63b3ed;
-    --color-info-ultra-light: #ebf8ff;
-    /* Enhanced Gradients */
-    --gradient-primary: linear-gradient(135deg, #0066cc 0%, #004080 100%);
-    --gradient-secondary: linear-gradient(135deg, #ff6b35 0%, #e5511a 100%);
-    --gradient-sky: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-    --gradient-sunset: linear-gradient(135deg, #ff9a56 0%, #ff6b35 50%, #ff4500 100%);
-    --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-    --gradient-glass: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-    --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --gradient-mesh: radial-gradient(at 40% 20%, hsla(28, 100%, 74%, 0.3) 0px, transparent 50%), radial-gradient(at 80% 0%, hsla(189, 100%, 56%, 0.3) 0px, transparent 50%), radial-gradient(at 0% 50%, hsla(355, 100%, 93%, 0.3) 0px, transparent 50%);
-    /* Enhanced Shadows */
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
-    --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.2);
-    --shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.25);
-    --shadow-2xl: 0 20px 60px rgba(0, 0, 0, 0.3);
-    --shadow-colored: 0 8px 25px rgba(0, 102, 204, 0.2);
-    --shadow-glow: 0 0 20px rgba(0, 102, 204, 0.3);
-    /* Enhanced Spacing Scale */
-    --spacing-xs: 0.25rem;
-    /* 4px */
-    --spacing-sm: 0.5rem;
-    /* 8px */
-    --spacing-md: 1rem;
-    /* 16px */
-    --spacing-lg: 1.5rem;
-    /* 24px */
-    --spacing-xl: 2rem;
-    /* 32px */
-    --spacing-2xl: 3rem;
-    /* 48px */
-    --spacing-3xl: 4rem;
-    /* 64px */
-    --spacing-4xl: 6rem;
-    /* 96px */
-    /* Enhanced Border Radius */
-    --radius-xs: 0.25rem;
-    /* 4px */
-    --radius-sm: 0.375rem;
-    /* 6px */
-    --radius-md: 0.5rem;
-    /* 8px */
-    --radius-lg: 0.75rem;
-    /* 12px */
-    --radius-xl: 1rem;
-    /* 16px */
-    --radius-2xl: 1.5rem;
-    /* 24px */
-    --radius-3xl: 2rem;
-    /* 32px */
-    --radius-full: 9999px;
-    /* Animation Durations */
-    --duration-fast: 150ms;
-    --duration-normal: 300ms;
-    --duration-slow: 500ms;
-    --duration-slower: 700ms;
-    /* Animation Easings */
-    --ease-in: cubic-bezier(0.4, 0, 1, 1);
-    --ease-out: cubic-bezier(0, 0, 0.2, 1);
-    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    /* Typography Scale */
-    --text-xs: 0.75rem;
-    /* 12px */
-    --text-sm: 0.875rem;
-    /* 14px */
-    --text-base: 1rem;
-    /* 16px */
-    --text-lg: 1.125rem;
-    /* 18px */
-    --text-xl: 1.25rem;
-    /* 20px */
-    --text-2xl: 1.5rem;
-    /* 24px */
-    --text-3xl: 1.875rem;
-    /* 30px */
-    --text-4xl: 2.25rem;
-    /* 36px */
-    --text-5xl: 3rem;
-    /* 48px */
-    /* Z-index Scale */
-    --z-dropdown: 1000;
-    --z-modal: 1010;
-    --z-toast: 1020;
-    --z-tooltip: 1030;
-    --gradient-sunset: linear-gradient(135deg, #ff9a56 0%, #ff6b35 50%, #ff4500 100%);
-    --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-    /* Shadows */
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
-    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
-    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
-    /* Spacing */
-    --spacing-xs: 0.25rem;
-    --spacing-sm: 0.5rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
-    --spacing-2xl: 3rem;
-    /* Border Radius */
-    --radius-sm: 0.375rem;
-    --radius-md: 0.5rem;
-    --radius-lg: 0.75rem;
-    --radius-xl: 1rem;
-    --radius-2xl: 1.5rem;
-    /* Typography */
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-    line-height: 1.6;
-    font-weight: 400;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  /* Cockpit & Chassis Palette */
+  --chassis-bg: #0d0f14;
+  --chassis-metal: #151821;
+  --chassis-surface: #1c202c;
+  --chassis-surface-raised: #242a3a;
+  --chassis-border: #2e3547;
+  --chassis-border-highlight: #45506a;
+  
+  /* Split-Flap Display Colors */
+  --flap-bg: #111317;
+  --flap-bg-bottom: #0b0d10;
+  --flap-crease: #050608;
+  --flap-text-ivory: #f5f6f8;
+  --flap-text-amber: #ffaa00;
+  --flap-text-green: #00ff88;
+  --flap-border: #232733;
+
+  /* Neon & Indicator Accents */
+  --neon-cyan: #00e5ff;
+  --neon-cyan-glow: rgba(0, 229, 255, 0.4);
+  --neon-amber: #f59e0b;
+  --neon-amber-glow: rgba(245, 158, 11, 0.4);
+  --neon-orange: #ff5500;
+  --neon-orange-glow: rgba(255, 85, 0, 0.5);
+  --neon-green: #10b981;
+  --neon-green-glow: rgba(16, 185, 129, 0.45);
+  --neon-red: #ef4444;
+
+  /* Hazard Stripe Colors */
+  --hazard-yellow: #f59e0b;
+  --hazard-black: #12141a;
+
+  /* Typography */
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-mono: 'Share Tech Mono', 'JetBrains Mono', monospace;
+  --font-sans: 'Space Grotesk', sans-serif;
 }
 
-
-/* Base Reset */
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-html {
-    scroll-behavior: smooth;
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--chassis-bg);
+  background-image: 
+    radial-gradient(ellipse at 50% 0%, rgba(14, 165, 233, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 10% 90%, rgba(245, 158, 11, 0.04) 0%, transparent 40%),
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+  color: var(--flap-text-ivory);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  overflow-x: hidden;
 }
 
-body {
-    margin: 0;
-    min-width: 320px;
-    min-height: 100vh;
-    background: var(--color-light);
-    color: var(--color-dark);
-    font-family: 'Inter', sans-serif;
-    line-height: 1.6;
-    overflow-x: hidden;
-}
-
-
-/* Selection */
-
-::selection {
-    background: var(--color-primary-light);
-    color: var(--color-white);
-}
-
-
-/* Focus */
-
-:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-}
-
-
-/* Scrollbar */
-
+/* Custom Scrollbars */
 ::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
+  height: 8px;
 }
-
 ::-webkit-scrollbar-track {
-    background: var(--color-light);
+  background: #0d0f14;
 }
-
 ::-webkit-scrollbar-thumb {
-    background: var(--color-gray-lighter);
-    border-radius: var(--radius-sm);
+  background: #2a3142;
+  border-radius: 4px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-gray-light);
+  background: var(--neon-amber);
 }
 
-
-/* Typography */
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    line-height: 1.2;
-    color: var(--color-dark);
+/* Hazard Tape Striping */
+.hazard-tape {
+  width: 100%;
+  height: 14px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--hazard-yellow),
+    var(--hazard-yellow) 14px,
+    var(--hazard-black) 14px,
+    var(--hazard-black) 28px
+  );
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-h1 {
-    font-size: 2.25rem;
+/* Hex Bolts & Industrial Screws */
+.hex-screw {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle at 35% 35%, #64748b 0%, #1e293b 80%);
+  border-radius: 50%;
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.8);
+  z-index: 5;
+}
+.hex-screw::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: #0f172a;
+  transform: translateY(-50%) rotate(45deg);
+}
+.hex-screw.top-left { top: 8px; left: 8px; }
+.hex-screw.top-right { top: 8px; right: 8px; }
+.hex-screw.bottom-left { bottom: 8px; left: 8px; }
+.hex-screw.bottom-right { bottom: 8px; right: 8px; }
+
+/* Status Pulsing Beacons */
+.beacon-led {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  position: relative;
+}
+.beacon-led.pulse-green {
+  background-color: var(--neon-green);
+  box-shadow: 0 0 8px var(--neon-green-glow);
+  animation: ledPulseGreen 1.8s infinite;
+}
+.beacon-led.pulse-amber {
+  background-color: var(--neon-amber);
+  box-shadow: 0 0 8px var(--neon-amber-glow);
+  animation: ledPulseAmber 1.8s infinite;
 }
 
-h2 {
-    font-size: 1.875rem;
+@keyframes ledPulseGreen {
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 8px var(--neon-green-glow); }
+  50% { opacity: 0.5; transform: scale(0.9); box-shadow: 0 0 2px var(--neon-green-glow); }
+}
+@keyframes ledPulseAmber {
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 8px var(--neon-amber-glow); }
+  50% { opacity: 0.5; transform: scale(0.9); box-shadow: 0 0 2px var(--neon-amber-glow); }
 }
 
-h3 {
-    font-size: 1.5rem;
+/* Blinking Terminal Cursor */
+.blinking-cursor {
+  display: inline-block;
+  color: var(--neon-amber);
+  font-weight: 700;
+  animation: blinkCursor 0.9s infinite step-start;
+}
+@keyframes blinkCursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
-h4 {
-    font-size: 1.25rem;
+/* Starburst Stickers */
+.sticker-burst {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #0b0c10;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transform: rotate(-3deg);
+  user-select: none;
+}
+.sticker-burst.burst-orange {
+  background: linear-gradient(135deg, #ff7700 0%, #ff5500 100%);
+  color: #ffffff;
+  border: 2px dashed #ffe600;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+.sticker-burst.burst-yellow {
+  background: linear-gradient(135deg, #ffe600 0%, #f59e0b 100%);
+  color: #12141a;
+  border: 2px solid #ffffff;
+  transform: rotate(4deg);
 }
 
-h5 {
-    font-size: 1.125rem;
+/* Luggage / Dispatch Stickers */
+.sticker-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  user-select: none;
+}
+.tag-utility {
+  background: #a855f7;
+  color: #ffffff;
+  border: 1px dashed rgba(255, 255, 255, 0.6);
+  transform: rotate(-4deg);
+}
+.tag-stamps {
+  background: #3b82f6;
+  color: #ffffff;
+  border: 1px solid #93c5fd;
+  transform: rotate(2deg);
+}
+.tag-lntd {
+  background: #f97316;
+  color: #ffffff;
+  font-weight: 800;
+  transform: rotate(-2deg);
+}
+.badge-flight-status {
+  background: #0284c7;
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 4px 12px;
+  border: 1px solid #7dd3fc;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+}
+.starburst-limited {
+  background: #eab308;
+  color: #000;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  padding: 4px 12px;
+  border-radius: 4px;
+  transform: rotate(6deg);
+  border: 2px dashed #000;
 }
 
-h6 {
-    font-size: 1rem;
+/* ==========================================================================
+   SPLIT-FLAP TILES STYLING (Solari di Udine Board Replica)
+   ========================================================================== */
+.split-flap-word {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+  perspective: 400px;
 }
 
-p {
-    margin-bottom: var(--spacing-md);
+.flap-tile {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  width: 26px;
+  height: 38px;
+  background-color: var(--flap-bg);
+  border-radius: 3px;
+  border: 1px solid var(--flap-border);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.8),
+    0 3px 6px rgba(0, 0, 0, 0.6);
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  line-height: 38px;
+  font-weight: 700;
+  letter-spacing: 0;
+  overflow: hidden;
+  user-select: none;
+  transform-style: preserve-3d;
 }
 
-
-/* Utility Classes */
-
-.text-primary {
-    color: var(--color-primary);
+/* Color variations for flap text */
+.flap-color-default .flap-char,
+.flap-color-ivory .flap-char {
+  color: var(--flap-text-ivory);
+}
+.flap-color-amber .flap-char {
+  color: var(--flap-text-amber);
+  text-shadow: 0 0 4px rgba(255, 170, 0, 0.4);
+}
+.flap-color-green .flap-char {
+  color: var(--flap-text-green);
+  text-shadow: 0 0 4px rgba(0, 255, 136, 0.4);
 }
 
-.text-secondary {
-    color: var(--color-secondary);
+.flap-top, .flap-bottom {
+  position: relative;
+  width: 100%;
+  height: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
 }
 
-.text-success {
-    color: var(--color-success);
+.flap-top {
+  background: linear-gradient(180deg, #1e222b 0%, #13151b 100%);
+  border-bottom: 1px solid var(--flap-crease);
+}
+.flap-top .flap-char {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 38px;
+  line-height: 38px;
+  text-align: center;
 }
 
-.text-warning {
-    color: var(--color-warning);
+.flap-bottom {
+  background: linear-gradient(180deg, #101217 0%, #0a0b0e 100%);
+}
+.flap-bottom .flap-char {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 38px;
+  line-height: 38px;
+  text-align: center;
 }
 
-.text-error {
-    color: var(--color-error);
+/* Central split crease */
+.flap-crease {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #020304;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+  z-index: 2;
+  transform: translateY(-50%);
 }
 
-.text-muted {
-    color: var(--color-gray-light);
+/* Left & Right Mechanical Hinges */
+.flap-hinge {
+  position: absolute;
+  top: 50%;
+  width: 2px;
+  height: 4px;
+  background: #475569;
+  z-index: 3;
+  transform: translateY(-50%);
+}
+.flap-hinge.left { left: 0; }
+.flap-hinge.right { right: 0; }
+
+/* Flip animation */
+.flap-tile.flipping {
+  animation: flapFlipCycle 0.12s ease-in-out;
+}
+@keyframes flapFlipCycle {
+  0% { transform: rotateX(0deg); }
+  50% { transform: rotateX(-45deg); filter: brightness(1.2); }
+  100% { transform: rotateX(0deg); }
 }
 
-.bg-primary {
-    background-color: var(--color-primary);
+/* ==========================================================================
+   TOAST BANNER
+   ========================================================================== */
+.terminal-toast-banner {
+  width: 100%;
+  padding: 10px 24px;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid;
+  z-index: 99;
 }
-
-.bg-secondary {
-    background-color: var(--color-secondary);
+.terminal-toast-banner.success {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: var(--neon-green);
+  color: #34d399;
 }
-
-.bg-white {
-    background-color: var(--color-white);
+.terminal-toast-banner.error {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: var(--neon-red);
+  color: #f87171;
 }
-
-.bg-light {
-    background-color: var(--color-light);
+.toast-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
-
-.shadow-sm {
-    box-shadow: var(--shadow-sm);
-}
-
-.shadow-md {
-    box-shadow: var(--shadow-md);
-}
-
-.shadow-lg {
-    box-shadow: var(--shadow-lg);
-}
-
-.shadow-xl {
-    box-shadow: var(--shadow-xl);
-}
-
-.rounded-sm {
-    border-radius: var(--radius-sm);
-}
-
-.rounded-md {
-    border-radius: var(--radius-md);
-}
-
-.rounded-lg {
-    border-radius: var(--radius-lg);
-}
-
-.rounded-xl {
-    border-radius: var(--radius-xl);
+.toast-close-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.1rem;
+  cursor: pointer;
 }

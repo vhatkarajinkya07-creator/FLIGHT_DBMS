@@ -1,0 +1,409 @@
+/* ==========================================================================
+   RETRO-INDUSTRIAL COCKPIT & SOLARI DISPATCH CONSOLE - THEME SYSTEM
+   ========================================================================== */
+
+:root {
+  --bg-deep: #0a0c10;
+  --bg-chassis: #16191f;
+  --bg-panel: #1d212a;
+  --bg-panel-dark: #12151b;
+  --bg-metal-plate: #252b36;
+  --bg-crt: #0b120f;
+
+  /* Accent & Tactical Signal Colors */
+  --hazard-yellow: #facc15;
+  --hazard-orange: #f97316;
+  --hazard-dark: #111418;
+  --signal-green: #22c55e;
+  --signal-green-glow: rgba(34, 197, 94, 0.45);
+  --signal-red: #ef4444;
+  --signal-red-glow: rgba(239, 68, 68, 0.45);
+  --signal-amber: #f59e0b;
+  --signal-amber-glow: rgba(245, 158, 11, 0.45);
+  --retro-blue: #2563eb;
+  --retro-cyan: #06b6d4;
+
+  /* Typography Fonts */
+  --font-mono: "Share Tech Mono", monospace;
+  --font-pixel: "VT323", monospace;
+  --font-display: "Bebas Neue", sans-serif;
+  --font-tech: "Orbitron", sans-serif;
+  --font-sans: "Space Grotesk", sans-serif;
+
+  /* Borders & Shadows */
+  --metal-border: 2px solid #3b4252;
+  --metal-border-light: 1px solid #4c566a;
+  --metal-border-dark: 2px solid #0f1115;
+  --panel-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.1),
+    0 10px 25px -5px rgba(0, 0, 0, 0.8), 0 0 0 1px #090a0d;
+}
+
+/* Base Industrial Container */
+.cockpit-viewport {
+  min-height: 100vh;
+  background-color: var(--bg-deep);
+  background-image: 
+    radial-gradient(circle at 50% 30%, #1a202c 0%, #0a0c10 80%),
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.25) 2px, rgba(0, 0, 0, 0.25) 4px);
+  color: #e2e8f0;
+  font-family: var(--font-mono);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Hazard Warning Tape Strip */
+.hazard-tape {
+  height: 18px;
+  width: 100%;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--hazard-yellow),
+    var(--hazard-yellow) 14px,
+    var(--hazard-dark) 14px,
+    var(--hazard-dark) 28px
+  );
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.hazard-tape-sm {
+  height: 10px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--hazard-orange),
+    var(--hazard-orange) 8px,
+    var(--hazard-dark) 8px,
+    var(--hazard-dark) 16px
+  );
+}
+
+/* Industrial Rivets & Bolts */
+.rivet {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #94a3b8, #475569 60%, #1e293b);
+  box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.4), 1px 1px 2px rgba(0, 0, 0, 0.8);
+  z-index: 10;
+}
+
+.rivet::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  right: 2px;
+  height: 1.5px;
+  background: #0f172a;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.rivet-tl { top: 8px; left: 8px; }
+.rivet-tr { top: 8px; right: 8px; }
+.rivet-bl { bottom: 8px; left: 8px; }
+.rivet-br { bottom: 8px; right: 8px; }
+
+/* Mechanical Push Button (Tactile 3D) */
+.tactile-btn {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 1px;
+  padding: 8px 18px;
+  border-radius: 4px;
+  border: 2px solid #000;
+  background: linear-gradient(180deg, #374151 0%, #1f2937 100%);
+  color: #f3f4f6;
+  box-shadow: 0 4px 0 #111827, 0 6px 6px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: all 0.08s ease;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-transform: uppercase;
+}
+
+.tactile-btn:hover {
+  background: linear-gradient(180deg, #4b5563 0%, #374151 100%);
+}
+
+.tactile-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #111827, 0 2px 3px rgba(0, 0, 0, 0.6);
+}
+
+.tactile-btn-primary {
+  background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
+  color: #111;
+  border-color: #78350f;
+  box-shadow: 0 4px 0 #78350f, 0 6px 8px rgba(245, 158, 11, 0.3);
+  font-weight: 700;
+}
+
+.tactile-btn-primary:hover {
+  background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+}
+
+.tactile-btn-primary:active {
+  box-shadow: 0 1px 0 #78350f;
+}
+
+.tactile-btn-insert-coin {
+  background: linear-gradient(180deg, #ea580c 0%, #c2410c 100%);
+  color: #fff;
+  border: 2px solid #7c2d12;
+  box-shadow: 0 4px 0 #7c2d12, 0 0 14px rgba(234, 88, 12, 0.5);
+  font-family: var(--font-pixel);
+  font-size: 1.35rem;
+  letter-spacing: 2px;
+  animation: pulse-coin 2s infinite ease-in-out;
+}
+
+@keyframes pulse-coin {
+  0%, 100% { box-shadow: 0 4px 0 #7c2d12, 0 0 12px rgba(234, 88, 12, 0.4); }
+  50% { box-shadow: 0 4px 0 #7c2d12, 0 0 22px rgba(234, 88, 12, 0.85); }
+}
+
+.tactile-btn-danger {
+  background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%);
+  color: #fff;
+  border-color: #450a0a;
+  box-shadow: 0 4px 0 #450a0a, 0 6px 6px rgba(220, 38, 38, 0.3);
+}
+
+.tactile-btn-success {
+  background: linear-gradient(180deg, #16a34a 0%, #15803d 100%);
+  color: #fff;
+  border-color: #052e16;
+  box-shadow: 0 4px 0 #052e16, 0 6px 6px rgba(22, 163, 74, 0.3);
+}
+
+/* LED Indicators */
+.led-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  margin-right: 6px;
+}
+
+.led-green {
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e, inset 1px 1px 2px #fff;
+  animation: led-blink 1.4s infinite;
+}
+
+.led-amber {
+  background: #f59e0b;
+  box-shadow: 0 0 8px #f59e0b, inset 1px 1px 2px #fff;
+}
+
+.led-red {
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444, inset 1px 1px 2px #fff;
+}
+
+@keyframes led-blink {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 6px #22c55e); }
+  50% { opacity: 0.4; filter: none; }
+}
+
+/* Retro Windows 95 / Amiga OS Window ("FLIGHT" from Panel 1) */
+.retro-window {
+  background: #1e2430;
+  border: 3px solid #3b4252;
+  border-radius: 6px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8), inset 1px 1px 0 rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  position: relative;
+}
+
+.retro-window-header {
+  background: linear-gradient(90deg, #1e40af 0%, #3b82f6 100%);
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #000;
+  user-select: none;
+}
+
+.retro-window-title {
+  color: #fff;
+  font-family: var(--font-tech);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.retro-window-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.retro-win-btn {
+  width: 18px;
+  height: 18px;
+  background: #e2e8f0;
+  border: 1px solid #000;
+  box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #64748b;
+  font-size: 10px;
+  line-height: 16px;
+  text-align: center;
+  font-family: monospace;
+  font-weight: bold;
+  cursor: pointer;
+  color: #0f172a;
+}
+
+.retro-win-btn.close {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* Mechanical Cockpit Bezel Panels */
+.cockpit-bezel {
+  background: #14171d;
+  border: 4px solid #2d3340;
+  border-radius: 8px;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8), 0 10px 20px rgba(0, 0, 0, 0.6);
+  position: relative;
+  padding: 20px;
+}
+
+.cockpit-plate-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: 1.5px;
+  color: #f1f5f9;
+  text-transform: uppercase;
+  background: #252b37;
+  padding: 4px 14px;
+  border: 2px solid #000;
+  display: inline-block;
+  margin-bottom: 15px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Rotary Knob Decoration */
+.rotary-knob {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #4b5563, #1f2937 70%);
+  border: 3px solid #111827;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8), inset 0 2px 3px rgba(255, 255, 255, 0.2);
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.rotary-knob::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 3px;
+  height: 12px;
+  background: #facc15;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  box-shadow: 0 0 4px #facc15;
+}
+
+.rotary-knob:hover {
+  transform: rotate(45deg);
+}
+
+/* Status Ticker Tape (SYS_STATUS: ONLINE) */
+.ticker-bar {
+  background: #0b0d10;
+  border-top: 2px solid #1f242d;
+  border-bottom: 2px solid #1f242d;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: #22c55e;
+  letter-spacing: 1px;
+}
+
+.ticker-text {
+  text-shadow: 0 0 6px rgba(34, 197, 94, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Starburst Stickers from reference */
+.sticker-starburst {
+  position: absolute;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1rem;
+  line-height: 1.1;
+  text-align: center;
+  padding: 12px;
+  clip-path: polygon(
+    50% 0%, 65% 15%, 85% 5%, 85% 25%, 100% 35%, 90% 50%,
+    100% 65%, 85% 75%, 85% 95%, 65% 85%, 50% 100%, 35% 85%,
+    15% 95%, 15% 75%, 0% 65%, 10% 50%, 0% 35%, 15% 25%,
+    15% 5%, 35% 15%
+  );
+  user-select: none;
+  z-index: 20;
+  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.7));
+  transform: rotate(-10deg);
+  transition: transform 0.2s ease;
+}
+
+.sticker-starburst:hover {
+  transform: rotate(0deg) scale(1.1);
+}
+
+.sticker-best-price {
+  background: linear-gradient(135deg, #ef4444 0%, #ea580c 100%);
+  color: #fff;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sticker-limited {
+  background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+  color: #000;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.sticker-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+  user-select: none;
+}
+
+.badge-utility { background: #3b82f6; color: #fff; border: 1px solid #1d4ed8; }
+.badge-stamps { background: #8b5cf6; color: #fff; border: 1px solid #6d28d9; }
+.badge-limited { background: #f97316; color: #fff; border: 1px solid #c2410c; }
+.badge-status { background: #10b981; color: #000; border: 1px solid #047857; font-weight: bold; }
